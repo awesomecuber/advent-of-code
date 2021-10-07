@@ -1,7 +1,6 @@
 import time, math, itertools
 
 coins = [1, 5, 10, 25]
-# coins = [2, 3, 4]
 
 calculated = {}
 def get_combinations(total):
