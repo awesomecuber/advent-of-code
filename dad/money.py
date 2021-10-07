@@ -28,12 +28,14 @@ def get_combinations2(total):
 
 def get_combinations3(total):
     arr = [[0 for _ in range(total + 1)] for _ in range(len(coins))]
-    arr[0][0] = 1
+    arr[0][0] = 1 # one way to make 0 total with only lowest coin
     for num_coins in range(0, len(coins)):
         for cur_total in range(0, total + 1):
             if cur_total - coins[num_coins] >= 0:
+                # use our biggest coin
                 arr[num_coins][cur_total] += arr[num_coins][cur_total - coins[num_coins]]
             if num_coins > 0:
+                # don't use our biggest coin
                 arr[num_coins][cur_total] += arr[num_coins - 1][cur_total]
     return arr[len(coins) - 1][total]
 
