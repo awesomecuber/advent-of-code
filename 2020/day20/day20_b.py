@@ -4,7 +4,7 @@ import math
 import os
 import sys
 
-with open(os.path.join(sys.path[0], "day20ex.txt")) as f:
+with open(os.path.join(sys.path[0], "day20.txt")) as f:
     puzzle_input = f.read().splitlines()
 
 tiles = {}
@@ -42,13 +42,15 @@ def get_nearby_coordinates(current):
         to_return = [x for x in to_return if min(all_y) <= x[1] <= max(all_y)]
     return to_return
 
-def convert_tile(tile_id, orientation):
+def convert_tile(tile_id, orientation, cut=False):
     tile_content = deepcopy(tiles[tile_id])
     if orientation >= 4:
         tile_content = ["".join(reversed(x)) for x in tile_content]
     rotation = orientation % 4
     for i in range(rotation):
         tile_content = ["".join(reversed(list(x))) for x in zip(*tile_content)]
+    if cut:
+        tile_content = [line[1:-1] for line in tile_content[1:-1]]
     return tile_content
 
 def left(tile_id, orientation):
@@ -93,16 +95,63 @@ def fill_board(current={}):
             del current[coord]
     return {}
 
+
 def form_picture(board):
     to_return = []
-    cut_tiles = deepcopy(tiles)
-    for right_tile in [x for x in board if x[0] > 0]:
-        tile_id = board[right_tile]
-        print(tile_id)
-        # convert_tile(*board[right_tile])
-        # cut_tiles[]
+
+    min_x = min([tile_coord[0] for tile_coord in board])
+    max_x = max([tile_coord[0] for tile_coord in board])
+    min_y = min([tile_coord[1] for tile_coord in board])
+    max_y = max([tile_coord[1] for tile_coord in board])
+    tile_size = len(tiles[board[(min_x, min_y)][0]][0]) - 2
+
+    for row_num, y in enumerate(range(max_y, min_y - 1, -1)):
+        to_return += ['' for _ in range(tile_size)]
+        for x in range(min_x, max_x + 1):
+            for i, line in enumerate(convert_tile(*board[(x, y)], True)):
+                to_return[i + row_num * tile_size] += line
+    return to_return
 
 board = fill_board()
 print(board)
 print("found tiling")
-form_picture(board)
+picture = form_picture(board)
+
+base_sea_monster = ['                  # ',
+                    '#    ##    ##    ###',
+                    ' #  #  #  #  #  #   ']
+
+all_sea_monsters = []
+
+for _ in range(4):
+    all_sea_monsters.append(base_sea_monster)
+    base_sea_monster = ["".join(reversed(list(x))) for x in zip(*base_sea_monster)]
+base_sea_monster = ["".join(reversed(x)) for x in base_sea_monster]
+for _ in range(4):
+    all_sea_monsters.append(base_sea_monster)
+    base_sea_monster = ["".join(reversed(list(x))) for x in zip(*base_sea_monster)]
+
+num_monsters = 0
+for sea_monster in all_sea_monsters:
+    for y in range(0, len(picture) - len(sea_monster)):
+        for x in range(0, len(picture[0]) - len(sea_monster[0])):
+            found_monster = True
+            for (monster_y, row) in enumerate(sea_monster):
+                for (monster_x, char) in enumerate(row):
+                    if char == '#' and picture[y + monster_y][x + monster_x] not in ['#', 'o']:
+                        found_monster = False
+            if found_monster:
+                num_monsters += 1
+                for (monster_y, row) in enumerate(sea_monster):
+                    for (monster_x, char) in enumerate(row):
+                        if char == '#':
+                            list_of_row = list(picture[y + monster_y])
+                            list_of_row[x + monster_x] = 'o'
+                            picture[y + monster_y] = ''.join(list_of_row)
+
+roughness = 0
+for row in picture:
+    for char in row:
+        if char == '#':
+            roughness += 1
+print('roughness: ', roughness)
