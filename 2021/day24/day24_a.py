@@ -90,7 +90,7 @@ def reverse_engineer(model_num: str, steps: int = 14) -> int:
         else:
             z = 26 * z + ns[step] + z_adds[step]
         z_mods.append(z % 26)
-    
+
     for a in zip(ns, z_div_26s, equality_adds, z_adds, z_mods):
         if a[1]:
             print(a)

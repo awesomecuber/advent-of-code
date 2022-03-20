@@ -20,7 +20,7 @@ class Cube:
 
     def size(self) -> int:
         return reduce(mul, (range.max - range.min + 1 for range in self.ranges))
-    
+
     def __repr__(self) -> str:
         return (
             f'x={self.ranges[0].min}..{self.ranges[0].max},'
@@ -38,7 +38,7 @@ def split_cube(to_split: Cube, other: Cube) -> set[Cube]:
     to_return.add(to_split)
     # first, cut along x dimension
     # for every split cube (redundant for first dimension but whatevs):
-    # 
+    #
     for n, other_range in enumerate(other.ranges):
         new_to_return: set[Cube] = set()
         for split_cube in to_return:
@@ -48,7 +48,7 @@ def split_cube(to_split: Cube, other: Cube) -> set[Cube]:
                 split_points.append(other_range.min)
             if split_range.min <= other_range.max < split_range.max:
                 split_points.append(other_range.max + 1)
-            
+
             if len(split_points) == 0:
                 new_to_return.add(deepcopy(split_cube))
             if len(split_points) == 1:

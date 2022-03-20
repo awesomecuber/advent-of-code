@@ -77,7 +77,7 @@ while things_moving:
                     next_spots[y][x] = spots[y][x]
             if spot == Spot.RIGHT:
                 next_spots[y][x] = spots[y][x]
-    
+
     spots = next_spots
 
 print(step)
