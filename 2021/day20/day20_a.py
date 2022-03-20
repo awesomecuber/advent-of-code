@@ -34,7 +34,7 @@ def print_image(on_pixels):
 background_on = False
 # print_image(on_pixels)
 
-for i in range(50):
+for i in range(2):
     MARGIN = 1
     min_x = min(x for x, _ in on_pixels)
     max_x = max(x for x, _ in on_pixels)
@@ -62,7 +62,6 @@ for i in range(50):
     elif background_on and 511 not in to_turn_on:
         background_on = False
     on_pixels = next_on_pixels
-    print(i + 1)
 
 print(len(on_pixels))
 # print_image(on_pixels)
