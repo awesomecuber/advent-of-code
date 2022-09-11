@@ -13,10 +13,8 @@ def ones_digit(num: int) -> int:
     return abs(num) % 10
 
 
-# multiply input list by pattern (a dot product kinda)
-
-
 def input_times_pattern(input: list[int], pattern: list[int]) -> int:
+    """multiply input list by pattern (a dot product kinda)"""
     return ones_digit(sum(map(operator.mul, input, itertools.cycle(pattern))))
 
 
@@ -33,7 +31,10 @@ def apply_phase(input_signal: list[int]):
     return digits
 
 
-for i in range(100):
+print("".join(map(str, nums)))
+
+for i in range(1):
     print(i)
     nums = apply_phase(nums)
-print("".join(map(str, nums[:8])))
+# print("".join(map(str, nums[:8])))
+print("".join(map(str, nums)))

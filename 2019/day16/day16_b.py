@@ -1,36 +1,19 @@
-import itertools
-import operator
 import os
 import sys
 
 with open(os.path.join(sys.path[0], "day16.txt")) as f:
     puzzle_input = f.read()
-puzzle_input = "80871224585914546619083218645595"
-nums = [int(n) for n in puzzle_input]
 
+nums = [int(n) for n in puzzle_input] * 10000
+message_offset = int(puzzle_input[:7])
 
-def ones_digit(num: int) -> int:
-    return abs(num) % 10
+for i in range(100):
+    print(i)
+    next_nums = nums.copy()
+    total = 0
+    for j in range(len(next_nums) - 1, message_offset - 1, -1):
+        total += next_nums[j]
+        next_nums[j] = abs(total) % 10  # ones digit
+    nums = next_nums
 
-
-# multiply input list by pattern (a dot product kinda)
-def input_times_pattern(input: list[int], pattern: list[int]) -> int:
-    return ones_digit(sum(map(operator.mul, input, itertools.cycle(pattern))))
-
-
-def get_pattern(n):
-    to_return = [0] * (n - 1) + [1] * n + [0] * n + [-1] * n + [0]
-    return to_return
-
-
-def apply_phase(input_signal: list[int]):
-    digits = [
-        input_times_pattern(input_signal, get_pattern(n))
-        for n in range(1, len(input_signal) + 1)
-    ]
-    return digits
-
-
-for _ in range(100):
-    nums = apply_phase(nums)
-print("".join(map(str, nums)))
+print("".join(map(str, nums[message_offset : message_offset + 8])))
