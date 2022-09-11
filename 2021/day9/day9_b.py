@@ -45,4 +45,6 @@ for low_point in flows_to.values():
         basin_sizes[low_point] = 0
     basin_sizes[low_point] += 1
 
-print(functools.reduce(lambda x, y: x * y, sorted(basin_sizes.values(), reverse=True)[:3]))
+print(
+    functools.reduce(lambda x, y: x * y, sorted(basin_sizes.values(), reverse=True)[:3])
+)

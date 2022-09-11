@@ -10,12 +10,13 @@ asteroids = set()
 
 for y, line in enumerate(puzzle_input):
     for x, char in enumerate(line):
-        if char == '#':
+        if char == "#":
             asteroids.add((x, y))
+
 
 def get_dir(monitering_station, other_asteroid):
     if monitering_station == other_asteroid:
-        raise Exception('monitering and other must be different')
+        raise Exception("monitering and other must be different")
 
     station_x, station_y = monitering_station
     other_x, other_y = other_asteroid
@@ -28,6 +29,7 @@ def get_dir(monitering_station, other_asteroid):
     dir_y = int(diff_y / dist)
 
     return dir_x, dir_y
+
 
 def asteroid_visible(monitering_station, other_asteroid):
     if monitering_station == other_asteroid:
@@ -47,6 +49,7 @@ def asteroid_visible(monitering_station, other_asteroid):
         cur_spot_y += dir_y
     return True
 
+
 most_visible = -1
 station_location = None
 
@@ -61,11 +64,12 @@ for monitering_station in asteroids:
 
 # we now know where the station goes
 
-asteroids.remove(station_location) # type: ignore
+asteroids.remove(station_location)  # type: ignore
 
 all_dirs = set()
 for asteroid in asteroids:
     all_dirs.add(get_dir(station_location, asteroid))
+
 
 def get_angle(dir):
     angle = atan2(dir[0], -dir[1])
@@ -73,10 +77,12 @@ def get_angle(dir):
         angle += 2 * pi
     return angle
 
+
 sorted_dirs = sorted(all_dirs, key=get_angle)
 
 MAX_X = max(x for x, _ in asteroids)
 MAX_Y = max(y for _, y in asteroids)
+
 
 def vaporize_asteroid(dir):
     cur_x = station_location[0] + dir[0]
@@ -90,6 +96,7 @@ def vaporize_asteroid(dir):
 
     asteroids.remove((cur_x, cur_y))
     return cur_x, cur_y
+
 
 vaporized_count = 0
 for dir in cycle(sorted_dirs):

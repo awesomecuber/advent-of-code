@@ -11,9 +11,9 @@ all_allergens = set()
 foods = []
 
 for line in puzzle_input:
-    food_ingredients, food_allergens = line.split(' (contains ')
+    food_ingredients, food_allergens = line.split(" (contains ")
     food_ingredients = set(food_ingredients.split())
-    food_allergens = set(food_allergens[:-1].split(', '))
+    food_allergens = set(food_allergens[:-1].split(", "))
     all_ingredients |= food_ingredients
     all_allergens |= food_allergens
     foods.append((food_ingredients, food_allergens))
@@ -40,9 +40,10 @@ for ingredient in no_allergen_ingredients:
 
 
 def get_true(dict):
-    return [k for k,v in dict.items() if v]
+    return [k for k, v in dict.items() if v]
 
-answer = {k: '' for k in can_be}
+
+answer = {k: "" for k in can_be}
 
 we_done = False
 while not we_done:
@@ -57,4 +58,4 @@ while not we_done:
             we_done = False
 
 almost_final_answer = sorted(list(answer.items()), key=lambda x: x[1])
-print(','.join(x[0] for x in almost_final_answer))
+print(",".join(x[0] for x in almost_final_answer))

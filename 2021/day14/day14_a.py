@@ -23,8 +23,12 @@ for line in puzzle_input:
 for _ in range(40):
     i = 0
     while i < len(template) - 1:
-        if template[i:i+2] in insertion_rules:
-            template = template[:i+1] + insertion_rules[template[i:i+2]] + template[i+1:]
+        if template[i : i + 2] in insertion_rules:
+            template = (
+                template[: i + 1]
+                + insertion_rules[template[i : i + 2]]
+                + template[i + 1 :]
+            )
             i += 1
         i += 1
 

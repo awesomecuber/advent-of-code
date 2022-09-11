@@ -8,20 +8,23 @@ import sys
 with open(os.path.join(sys.path[0], "day23.txt")) as f:
     puzzle_input = f.read().splitlines()
 
+
 class Amphipod(Enum):
     A = 1
     B = 10
     C = 100
     D = 1000
 
+
 rooms = {
     2: [Amphipod[puzzle_input[3][3]], Amphipod[puzzle_input[2][3]]],
     4: [Amphipod[puzzle_input[3][5]], Amphipod[puzzle_input[2][5]]],
     6: [Amphipod[puzzle_input[3][7]], Amphipod[puzzle_input[2][7]]],
-    8: [Amphipod[puzzle_input[3][9]], Amphipod[puzzle_input[2][9]]]
+    8: [Amphipod[puzzle_input[3][9]], Amphipod[puzzle_input[2][9]]],
 }
 
 hallway: list[Amphipod | None] = [None] * 11
+
 
 def possible_to_leave(pos: int, room: list[Amphipod]):
     if len(room) == 0:
@@ -36,6 +39,7 @@ def possible_to_leave(pos: int, room: list[Amphipod]):
         return False
     return True
 
+
 def get_destination_room(amphipod: Amphipod):
     if amphipod == Amphipod.A:
         return 2
@@ -46,14 +50,15 @@ def get_destination_room(amphipod: Amphipod):
     if amphipod == Amphipod.D:
         return 8
 
-def freeze_rooms(rooms: dict[int, list[Amphipod]]) -> tuple[tuple[Amphipod,...],...]:
-    return tuple(map(tuple, rooms.values())) # type: ignore
+
+def freeze_rooms(rooms: dict[int, list[Amphipod]]) -> tuple[tuple[Amphipod, ...], ...]:
+    return tuple(map(tuple, rooms.values()))  # type: ignore
+
 
 @cache
 def best_energy(
-        room_values: tuple[tuple[Amphipod,...],...],
-        hallway: tuple[Amphipod | None]
-    ) -> int:
+    room_values: tuple[tuple[Amphipod, ...], ...], hallway: tuple[Amphipod | None]
+) -> int:
 
     rooms = {
         2: list(room_values[0]),
@@ -61,7 +66,10 @@ def best_energy(
         6: list(room_values[2]),
         8: list(room_values[3]),
     }
-    if all(not possible_to_leave(pos, room) and len(room) == 2 for pos, room in rooms.items()):
+    if all(
+        not possible_to_leave(pos, room) and len(room) == 2
+        for pos, room in rooms.items()
+    ):
         return 0
     all_energies: list[int] = [sys.maxsize]
 
@@ -70,13 +78,17 @@ def best_energy(
             continue
 
         destination_room = get_destination_room(moving)
-        possible_destinations = list(chain(
-            takewhile(lambda x: hallway[x] is None, range(pos + 1, 11)),
-            takewhile(lambda x: hallway[x] is None, range(pos - 1, -1, -1))
-        ))
+        possible_destinations = list(
+            chain(
+                takewhile(lambda x: hallway[x] is None, range(pos + 1, 11)),
+                takewhile(lambda x: hallway[x] is None, range(pos - 1, -1, -1)),
+            )
+        )
 
-        if (not possible_to_leave(destination_room, rooms[destination_room])
-                and destination_room in possible_destinations):
+        if (
+            not possible_to_leave(destination_room, rooms[destination_room])
+            and destination_room in possible_destinations
+        ):
             new_rooms = deepcopy(rooms)
             new_rooms[destination_room].append(moving)
             new_hallway = list(deepcopy(hallway))
@@ -90,21 +102,27 @@ def best_energy(
                 total_energy + best_energy(freeze_rooms(new_rooms), tuple(new_hallway))
             )
 
-    can_leave = {pos: room for pos, room in rooms.items() if possible_to_leave(pos, room)}
+    can_leave = {
+        pos: room for pos, room in rooms.items() if possible_to_leave(pos, room)
+    }
     for pos, room in can_leave.items():
         moving = room[-1]
         destination_room = get_destination_room(moving)
         leave_energy = moving.value
-        if len(room) == 1: # bug has to move twice
+        if len(room) == 1:  # bug has to move twice
             leave_energy *= 2
 
-        possible_destinations = list(chain(
-            takewhile(lambda x: hallway[x] is None, range(pos + 1, 11)),
-            takewhile(lambda x: hallway[x] is None, range(pos - 1, -1, -1))
-        ))
+        possible_destinations = list(
+            chain(
+                takewhile(lambda x: hallway[x] is None, range(pos + 1, 11)),
+                takewhile(lambda x: hallway[x] is None, range(pos - 1, -1, -1)),
+            )
+        )
 
-        if (not possible_to_leave(destination_room, rooms[destination_room])
-                and destination_room in possible_destinations):
+        if (
+            not possible_to_leave(destination_room, rooms[destination_room])
+            and destination_room in possible_destinations
+        ):
             new_rooms = deepcopy(rooms)
             moving = new_rooms[pos].pop()
             new_rooms[destination_room].append(moving)
@@ -126,9 +144,11 @@ def best_energy(
                     move_energy = abs(i - pos) * moving.value
                     total_energy = leave_energy + move_energy
                     all_energies.append(
-                        total_energy + best_energy(freeze_rooms(new_rooms), tuple(new_hallway))
+                        total_energy
+                        + best_energy(freeze_rooms(new_rooms), tuple(new_hallway))
                     )
 
     return min(all_energies)
+
 
 print(best_energy(freeze_rooms(rooms), tuple(hallway)))

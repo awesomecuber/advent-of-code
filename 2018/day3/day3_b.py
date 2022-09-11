@@ -21,14 +21,14 @@ for line in puzzle_input:
     _, x, y, w, h = get_data(line)
     for i in range(h):
         for j in range(w):
-            coords_times[(x+j, y+i)] += 1
+            coords_times[(x + j, y + i)] += 1
 
 for line in puzzle_input:
     id, x, y, w, h = get_data(line)
     no_overlap = True
     for i in range(h):
         for j in range(w):
-            if coords_times[(x+j, y+i)] != 1:
+            if coords_times[(x + j, y + i)] != 1:
                 no_overlap = False
     if no_overlap:
         print(id)

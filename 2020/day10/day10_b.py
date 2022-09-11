@@ -14,6 +14,8 @@ nums_set.add(goal)
 start_time = time.time()
 
 calculated = {}
+
+
 def count_arrangements(start):
     if start == goal:
         return 1
@@ -28,6 +30,7 @@ def count_arrangements(start):
         to_return += count_arrangements(start + 3)
     calculated[start] = to_return
     return to_return
+
 
 arrangements = count_arrangements(0)
 print(time.time() - start_time)

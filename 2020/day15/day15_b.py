@@ -1,7 +1,9 @@
 puzzle_input = "2,0,6,12,1,3"
 nums = [int(x) for x in puzzle_input.split(",")]
 
-previous_nums = {} # maps the value of the number to the turn where that number was last
+previous_nums = (
+    {}
+)  # maps the value of the number to the turn where that number was last
 
 for i, num in enumerate(nums[:-1]):
     previous_nums[num] = i + 1

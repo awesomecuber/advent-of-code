@@ -5,10 +5,10 @@ import sys
 with open(os.path.join(sys.path[0], "day17.txt")) as f:
     puzzle_input = f.readline()
 
-puzzle_input = puzzle_input[puzzle_input.index('x='):]
-x_range, y_range = puzzle_input.split(', ')
-x_vals = x_range[2:].split('..')
-y_vals = y_range[2:].split('..')
+puzzle_input = puzzle_input[puzzle_input.index("x=") :]
+x_range, y_range = puzzle_input.split(", ")
+x_vals = x_range[2:].split("..")
+y_vals = y_range[2:].split("..")
 
 min_x = int(x_vals[0])
 max_x = int(x_vals[1])

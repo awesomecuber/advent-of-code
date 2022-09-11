@@ -8,10 +8,12 @@ with open(os.path.join(sys.path[0], "day11.txt")) as f:
 current_state = [list(x) for x in puzzle_input]
 last_state = []
 
+
 def print_state():
     for line in current_state:
         print(line)
     print()
+
 
 while current_state != last_state:
     last_state = copy.deepcopy(current_state)

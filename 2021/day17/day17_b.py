@@ -6,10 +6,10 @@ import sys
 with open(os.path.join(sys.path[0], "day17.txt")) as f:
     puzzle_input = f.readline()
 
-puzzle_input = puzzle_input[puzzle_input.index('x='):]
-x_range, y_range = puzzle_input.split(', ')
-x_vals = x_range[2:].split('..')
-y_vals = y_range[2:].split('..')
+puzzle_input = puzzle_input[puzzle_input.index("x=") :]
+x_range, y_range = puzzle_input.split(", ")
+x_vals = x_range[2:].split("..")
+y_vals = y_range[2:].split("..")
 
 min_x = int(x_vals[0])
 max_x = int(x_vals[1])
@@ -22,7 +22,9 @@ low_y_vel = min_y - 1
 high_y_vel = -min_y - 1
 
 hits = 0
-for x_vel, y_vel in product(range(low_x_vel, high_x_vel + 1), range(low_y_vel, high_y_vel + 1)):
+for x_vel, y_vel in product(
+    range(low_x_vel, high_x_vel + 1), range(low_y_vel, high_y_vel + 1)
+):
     x = 0
     y = 0
     while True:

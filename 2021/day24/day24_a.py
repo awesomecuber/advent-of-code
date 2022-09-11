@@ -6,12 +6,8 @@ import sys
 with open(os.path.join(sys.path[0], "day24.txt")) as f:
     puzzle_input = f.read().splitlines()
 
-variables = {
-    'w': 0,
-    'x': 0,
-    'y': 0,
-    'z': 0
-}
+variables = {"w": 0, "x": 0, "y": 0, "z": 0}
+
 
 def val(b: str):
     try:
@@ -19,31 +15,34 @@ def val(b: str):
     except Exception:
         return variables[b]
 
+
 def reset_variables():
-    variables['w'] = 0
-    variables['x'] = 0
-    variables['y'] = 0
-    variables['z'] = 0
+    variables["w"] = 0
+    variables["x"] = 0
+    variables["y"] = 0
+    variables["z"] = 0
+
 
 def get_z(model_num: str, steps: int = 14) -> int:
     reset_variables()
     inp_count = 0
-    for instruction in puzzle_input[:steps * 18]:
+    for instruction in puzzle_input[: steps * 18]:
         match instruction.split():
-            case ('inp', a):
+            case ("inp", a):
                 variables[a] = int(model_num[inp_count])
                 inp_count += 1
-            case ('add', a, b):
+            case ("add", a, b):
                 variables[a] += val(b)
-            case ('mul', a, b):
+            case ("mul", a, b):
                 variables[a] *= val(b)
-            case ('div', a, b):
+            case ("div", a, b):
                 variables[a] //= val(b)
-            case ('mod', a, b):
+            case ("mod", a, b):
                 variables[a] %= val(b)
-            case ('eql', a, b):
+            case ("eql", a, b):
                 variables[a] = int(variables[a] == val(b))
-    return variables['z']
+    return variables["z"]
+
 
 def get_max_model_num(z: int = 0, step: int = 0) -> int:
     z_div_26 = True if int(puzzle_input[step * 18 + 4].split()[2]) == 26 else False
@@ -67,13 +66,16 @@ def get_max_model_num(z: int = 0, step: int = 0) -> int:
             return hm
     return -1
 
+
 def reverse_engineer(model_num: str, steps: int = 14) -> int:
     ns = list(map(int, list(model_num)))
     z_div_26s: list[bool] = []
     equality_adds: list[int] = []
     z_adds: list[int] = []
     for step in range(steps):
-        z_div_26s.append(True if int(puzzle_input[step * 18 + 4].split()[2]) == 26 else False)
+        z_div_26s.append(
+            True if int(puzzle_input[step * 18 + 4].split()[2]) == 26 else False
+        )
         equality_adds.append(int(puzzle_input[step * 18 + 5].split()[2]))
         z_adds.append(int(puzzle_input[step * 18 + 15].split()[2]))
 
@@ -82,7 +84,7 @@ def reverse_engineer(model_num: str, steps: int = 14) -> int:
     for step in range(steps):
         if z_div_26s[step]:
             if (z % 26) + equality_adds[step] == ns[step]:
-                print('we in')
+                print("we in")
                 z //= 26
             else:
                 # MY GUESS IS THAT IF IT GOES HERE, Z WON'T BE ZERO
@@ -106,6 +108,7 @@ def reverse_engineer(model_num: str, steps: int = 14) -> int:
     # print(z_adds)
     # print(z_mods)
     return z
+
 
 # for _ in range(1000):
 #     model_num = ''

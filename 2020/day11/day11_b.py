@@ -8,22 +8,35 @@ with open(os.path.join(sys.path[0], "day11.txt")) as f:
 current_state = [list(x) for x in puzzle_input]
 last_state = []
 
+
 def print_state():
     for line in current_state:
         print(line)
     print()
+
 
 while current_state != last_state:
     last_state = copy.deepcopy(current_state)
     for y, line in enumerate(last_state):
         for x, spot in enumerate(line):
             visible_occupied_seats = 0
-            directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+            directions = [
+                (-1, -1),
+                (-1, 0),
+                (-1, 1),
+                (0, -1),
+                (0, 1),
+                (1, -1),
+                (1, 0),
+                (1, 1),
+            ]
             for direction in directions:
                 x_eye = x
                 y_eye = y
-                while (0 <= x_eye + direction[0] <= len(line) - 1 and
-                       0 <= y_eye + direction[1] <= len(last_state) - 1):
+                while (
+                    0 <= x_eye + direction[0] <= len(line) - 1
+                    and 0 <= y_eye + direction[1] <= len(last_state) - 1
+                ):
                     x_eye += direction[0]
                     y_eye += direction[1]
                     if last_state[y_eye][x_eye] == "L":

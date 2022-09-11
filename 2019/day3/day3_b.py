@@ -7,6 +7,7 @@ with open(os.path.join(sys.path[0], "day3.txt")) as f:
 wire_one_instructions = puzzle_input[0].split(",")
 wire_two_instructions = puzzle_input[1].split(",")
 
+
 def get_wire_locations(wire_instructions):
     wire_locations = {}
     current_coord = [0, 0]
@@ -33,6 +34,7 @@ def get_wire_locations(wire_instructions):
                 current_step += 1
                 wire_locations[tuple(current_coord)] = current_step
     return wire_locations
+
 
 one = get_wire_locations(wire_one_instructions)
 two = get_wire_locations(wire_two_instructions)

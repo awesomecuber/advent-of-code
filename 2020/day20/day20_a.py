@@ -19,6 +19,7 @@ board_size = int(math.sqrt(len(tiles)))
 # 0-3 are unflipped, 4-7 are flipped (horizontally)
 # %0 is normal, %1 is clockwise, %2 is 180, %3 is counterclockwise
 
+
 def get_nearby_coordinates(current):
     current_coords = current.keys()
     to_return = set()
@@ -27,7 +28,7 @@ def get_nearby_coordinates(current):
             (current_coord[0] + 1, current_coord[1]),
             (current_coord[0] - 1, current_coord[1]),
             (current_coord[0], current_coord[1] + 1),
-            (current_coord[0], current_coord[1] - 1)
+            (current_coord[0], current_coord[1] - 1),
         ]
         for coord in coords_to_check:
             if coord not in current:
@@ -42,6 +43,7 @@ def get_nearby_coordinates(current):
         to_return = [x for x in to_return if min(all_y) <= x[1] <= max(all_y)]
     return to_return
 
+
 def convert_tile(tile_id, orientation):
     tile_content = copy.deepcopy(tiles[tile_id])
     if orientation >= 4:
@@ -51,40 +53,59 @@ def convert_tile(tile_id, orientation):
         tile_content = ["".join(reversed(list(x))) for x in zip(*tile_content)]
     return tile_content
 
+
 def left(tile_id, orientation):
     tile_content = convert_tile(tile_id, orientation)
     return "".join([x[0] for x in tile_content])
+
 
 def right(tile_id, orientation):
     tile_content = convert_tile(tile_id, orientation)
     return "".join([x[len(x) - 1] for x in tile_content])
 
+
 def top(tile_id, orientation):
     tile_content = convert_tile(tile_id, orientation)
     return tile_content[0]
+
 
 def bottom(tile_id, orientation):
     tile_content = convert_tile(tile_id, orientation)
     return tile_content[len(tile_content) - 1]
 
+
 def fill_board(current={}):
     if current == {}:
         current[(0, 0)] = (next(iter(tiles)), 0)
-    if len(current) == board_size ** 2:
+    if len(current) == board_size**2:
         return current
     remaining_tile_ids = tiles.keys() - [x[0] for x in current.values()]
     nearby_coords = get_nearby_coordinates(current)
-    for coord, tile_id, orientation in product(nearby_coords, remaining_tile_ids, range(8)):
+    for coord, tile_id, orientation in product(
+        nearby_coords, remaining_tile_ids, range(8)
+    ):
         left_coord = (coord[0] - 1, coord[1])
         right_coord = (coord[0] + 1, coord[1])
         top_coord = (coord[0], coord[1] + 1)
         bottom_coord = (coord[0], coord[1] - 1)
 
         if (
-            (left_coord not in current or left(tile_id, orientation) == right(*current[left_coord])) and
-            (right_coord not in current or right(tile_id, orientation) == left(*current[right_coord])) and
-            (top_coord not in current or top(tile_id, orientation) == bottom(*current[top_coord])) and
-            (bottom_coord not in current or bottom(tile_id, orientation) == top(*current[bottom_coord]))
+            (
+                left_coord not in current
+                or left(tile_id, orientation) == right(*current[left_coord])
+            )
+            and (
+                right_coord not in current
+                or right(tile_id, orientation) == left(*current[right_coord])
+            )
+            and (
+                top_coord not in current
+                or top(tile_id, orientation) == bottom(*current[top_coord])
+            )
+            and (
+                bottom_coord not in current
+                or bottom(tile_id, orientation) == top(*current[bottom_coord])
+            )
         ):
             current[coord] = (tile_id, orientation)
             result = fill_board(current)
@@ -93,13 +114,17 @@ def fill_board(current={}):
             del current[coord]
     return {}
 
+
 def get_answer(tile_positions):
     all_x = [x[0] for x in tile_positions.keys()]
     all_y = [x[1] for x in tile_positions.keys()]
-    return (tile_positions[(min(all_x), min(all_y))][0] *
-            tile_positions[(max(all_x), min(all_y))][0] *
-            tile_positions[(min(all_x), max(all_y))][0] *
-            tile_positions[(max(all_x), max(all_y))][0])
+    return (
+        tile_positions[(min(all_x), min(all_y))][0]
+        * tile_positions[(max(all_x), min(all_y))][0]
+        * tile_positions[(min(all_x), max(all_y))][0]
+        * tile_positions[(max(all_x), max(all_y))][0]
+    )
+
 
 tile_positions = fill_board()
 print(get_answer(tile_positions))

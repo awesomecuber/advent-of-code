@@ -16,15 +16,8 @@ num_dice_rolled = 0
 
 dice_roll = 0
 
-map = {
-    3: 1,
-    4: 3,
-    5: 6,
-    6: 7,
-    7: 6,
-    8: 3,
-    9: 1
-}
+map = {3: 1, 4: 3, 5: 6, 6: 7, 7: 6, 8: 3, 9: 1}
+
 
 @cache
 def num_win_universes(p1_pos, p1_score, p2_pos, p2_score, turn):
@@ -37,11 +30,7 @@ def num_win_universes(p1_pos, p1_score, p2_pos, p2_score, turn):
         for increment, times in map.items():
             new_p1_pos = (p1_pos + increment - 1) % 10 + 1
             new_p1_win_universes, new_p2_win_universes = num_win_universes(
-                new_p1_pos,
-                p1_score + new_p1_pos,
-                p2_pos,
-                p2_score,
-                2
+                new_p1_pos, p1_score + new_p1_pos, p2_pos, p2_score, 2
             )
             p1_win_universes += times * new_p1_win_universes
             p2_win_universes += times * new_p2_win_universes
@@ -51,22 +40,15 @@ def num_win_universes(p1_pos, p1_score, p2_pos, p2_score, turn):
         for increment, times in map.items():
             new_p2_pos = (p2_pos + increment - 1) % 10 + 1
             new_p1_win_universes, new_p2_win_universes = num_win_universes(
-                p1_pos,
-                p1_score,
-                new_p2_pos,
-                p2_score + new_p2_pos,
-                1
+                p1_pos, p1_score, new_p2_pos, p2_score + new_p2_pos, 1
             )
             p1_win_universes += times * new_p1_win_universes
             p2_win_universes += times * new_p2_win_universes
         return p1_win_universes, p2_win_universes
 
+
 p1_universes, p2_universes = num_win_universes(
-    player1_pos,
-    player1_score,
-    player2_pos,
-    player2_score,
-    1
+    player1_pos, player1_score, player2_pos, player2_score, 1
 )
 
 print(max(p1_universes, p2_universes))

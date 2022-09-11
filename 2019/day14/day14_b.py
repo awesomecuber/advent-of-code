@@ -13,8 +13,8 @@ Ingredient = tuple[int, str]
 to_make: dict[str, tuple[int, set[Ingredient]]] = {}
 
 for line in puzzle_input:
-    left, right = line.split(' => ')
-    ingredient_strs = left.split(', ')
+    left, right = line.split(" => ")
+    ingredient_strs = left.split(", ")
     ingredients: set[Ingredient] = set()
     for ingredient_str in ingredient_strs:
         quantity, chemical = ingredient_str.split()
@@ -22,11 +22,14 @@ for line in puzzle_input:
     quantity, chemical = right.split()
     to_make[chemical] = (int(quantity), ingredients)
 
-def get_requirements(source_quantity: int, source_chemical: str, leftovers: Counter[str]=None):
+
+def get_requirements(
+    source_quantity: int, source_chemical: str, leftovers: Counter[str] = None
+):
     if leftovers is None:
         leftovers = Counter()
 
-    if source_chemical == 'ORE':
+    if source_chemical == "ORE":
         return source_quantity
     recipe_quantity, ingredients = to_make[source_chemical]
     times_to_run_reaction = ((source_quantity - 1) // recipe_quantity) + 1
@@ -35,22 +38,26 @@ def get_requirements(source_quantity: int, source_chemical: str, leftovers: Coun
     for quantity, chemical in ingredients:
         adjusted_quantity = times_to_run_reaction * quantity
         use_from_leftovers = min(adjusted_quantity, leftovers[chemical])
-        fuel_needed += get_requirements(adjusted_quantity - use_from_leftovers, chemical, leftovers)
+        fuel_needed += get_requirements(
+            adjusted_quantity - use_from_leftovers, chemical, leftovers
+        )
         leftovers[chemical] -= use_from_leftovers
     leftovers[source_chemical] += excess
     return fuel_needed
+
 
 # -1 if not enough fuel
 # 1 if too much fuel
 # 0 if just right
 def is_correct_fuel(fuel_amount: int) -> int:
-    if get_requirements(fuel_amount, 'FUEL') > TRILLION:
+    if get_requirements(fuel_amount, "FUEL") > TRILLION:
         return 1
-    if get_requirements(fuel_amount + 1, 'FUEL') <= TRILLION:
+    if get_requirements(fuel_amount + 1, "FUEL") <= TRILLION:
         return -1
     return 0
 
-ore_per_fuel = get_requirements(1, 'FUEL')
+
+ore_per_fuel = get_requirements(1, "FUEL")
 lower_bound = TRILLION // ore_per_fuel
 upper_bound = TRILLION
 

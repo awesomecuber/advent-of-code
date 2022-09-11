@@ -8,11 +8,13 @@ with open(os.path.join(sys.path[0], "day8.txt")) as f:
 displays: list[tuple[list[set[str]], list[set[str]]]] = []
 
 for line in puzzle_input:
-    unique_signal_patterns, output_value = line.split(' | ')
-    displays.append((
-        list(map(set, unique_signal_patterns.split())),
-        list(map(set, output_value.split()))
-    ))
+    unique_signal_patterns, output_value = line.split(" | ")
+    displays.append(
+        (
+            list(map(set, unique_signal_patterns.split())),
+            list(map(set, output_value.split())),
+        )
+    )
 
 # 0 : 6 lines
 # 1 : 2 lines !
@@ -43,7 +45,7 @@ for line in puzzle_input:
 
 answer = 0
 for display in displays:
-    wire_segment_connections = [''] * 7
+    wire_segment_connections = [""] * 7
 
     unique_signal_patterns, output_value = display
     digits = [None] * 10
@@ -60,7 +62,9 @@ for display in displays:
         elif len(pattern) == 5:
             five_wires.append(pattern)
 
-    wire_segment_connections[0] = min(digits[7] - digits[1]) # use min to gather only element
+    wire_segment_connections[0] = min(
+        digits[7] - digits[1]
+    )  # use min to gather only element
 
     two_five = digits[1] & digits[7]
     one_three = digits[4] - digits[1]
@@ -78,15 +82,19 @@ for display in displays:
             digits[2] = pattern
 
     wire_segment_connections[2] = min(digits[2] - set(wire_segment_connections))
-    wire_segment_connections[5] = min(set('abcdefg') - set(wire_segment_connections))
+    wire_segment_connections[5] = min(set("abcdefg") - set(wire_segment_connections))
 
-    digits[0] = set('abcdefg') - set(wire_segment_connections[3])
-    digits[3] = set('abcdefg') - set([wire_segment_connections[1], wire_segment_connections[4]])
-    digits[5] = set('abcdefg') - set([wire_segment_connections[2], wire_segment_connections[4]])
-    digits[6] = set('abcdefg') - set(wire_segment_connections[2])
-    digits[9] = set('abcdefg') - set(wire_segment_connections[4])
+    digits[0] = set("abcdefg") - set(wire_segment_connections[3])
+    digits[3] = set("abcdefg") - set(
+        [wire_segment_connections[1], wire_segment_connections[4]]
+    )
+    digits[5] = set("abcdefg") - set(
+        [wire_segment_connections[2], wire_segment_connections[4]]
+    )
+    digits[6] = set("abcdefg") - set(wire_segment_connections[2])
+    digits[9] = set("abcdefg") - set(wire_segment_connections[4])
 
-    output_string = ''
+    output_string = ""
     for val in output_value:
         for n, digit in enumerate(digits):
             if val == digit:

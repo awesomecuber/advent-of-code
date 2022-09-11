@@ -2,7 +2,7 @@ import collections
 import time
 
 # puzzle_input = '389125467' # example
-puzzle_input = '418976235' # actual
+puzzle_input = "418976235"  # actual
 
 cups = collections.deque([int(x) for x in puzzle_input])
 for x in range(10, 1000001):

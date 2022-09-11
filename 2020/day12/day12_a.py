@@ -5,7 +5,7 @@ with open(os.path.join(sys.path[0], "day12.txt")) as f:
     puzzle_input = f.read().splitlines()
 
 position = [0, 0]
-direction = 1 # N E S W
+direction = 1  # N E S W
 for line in puzzle_input:
     command = line[:1]
     amount = int(line[1:])

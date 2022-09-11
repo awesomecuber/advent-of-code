@@ -8,7 +8,7 @@ with open(os.path.join(sys.path[0], "day8.txt")) as f:
 displays: list[tuple[list[str], list[str]]] = []
 
 for line in puzzle_input:
-    unique_signal_patterns, output_value = line.split(' | ')
+    unique_signal_patterns, output_value = line.split(" | ")
     displays.append((unique_signal_patterns.split(), output_value.split()))
 
 answer = 0

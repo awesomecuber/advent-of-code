@@ -3,13 +3,7 @@ import sys
 
 from intcode import ExitCode, IntCodeProgram
 
-TILE_REPR = {
-    0: ' ',
-    1: '#',
-    2: 'B',
-    3: '_',
-    4: 'o'
-}
+TILE_REPR = {0: " ", 1: "#", 2: "B", 3: "_", 4: "o"}
 
 WIDTH = 37
 HEIGHT = 20
@@ -21,9 +15,10 @@ Screen = dict[tuple[int, int], int]
 with open(os.path.join(sys.path[0], "day13.txt")) as f:
     puzzle_input = f.read()
 
-memory = [int(num) for num in puzzle_input.split(',')]
+memory = [int(num) for num in puzzle_input.split(",")]
 memory[0] = 2
 arcade = IntCodeProgram(memory)
+
 
 def update_screen(screen: Screen) -> int:
     global score
@@ -37,17 +32,20 @@ def update_screen(screen: Screen) -> int:
             score = type
         screen[x, y] = type
 
+
 def print_screen(screen: Screen, score):
     for y in range(HEIGHT):
         for x in range(WIDTH):
-            print(TILE_REPR[screen[x,y]], end='')
+            print(TILE_REPR[screen[x, y]], end="")
         print()
-    print(f'SCORE: {score}')
+    print(f"SCORE: {score}")
+
 
 def get_paddle_position(screen: Screen):
     for coord, type in screen.items():
         if type == 3:
             return coord
+
 
 def get_ball_position(screen: Screen):
     for coord, type in screen.items():
@@ -64,10 +62,10 @@ while True:
 
     if MANUAL:
         print_screen(screen, score)
-        move = input('(l)eft/(r)ight? (press enter for no action): ')
-        if move == 'l':
+        move = input("(l)eft/(r)ight? (press enter for no action): ")
+        if move == "l":
             arcade.add_input(-1)
-        elif move == 'r':
+        elif move == "r":
             arcade.add_input(1)
         else:
             arcade.add_input(0)

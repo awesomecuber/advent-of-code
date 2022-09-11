@@ -4,7 +4,7 @@ import sys
 with open(os.path.join(sys.path[0], "day16.txt")) as f:
     puzzle_input = f.read().splitlines()
 
-classes = {} # maps class name to ((a, b), (a, b))
+classes = {}  # maps class name to ((a, b), (a, b))
 nearby_tickets = []
 
 first_space = puzzle_input.index("")
@@ -19,7 +19,9 @@ for class_input in classes_input:
     classes[name] = (interval_one, interval_two)
 
 my_ticket = [int(x) for x in puzzle_input[first_space + 2].split(",")]
-nearby_tickets = [[int(y) for y in x.split(",")] for x in puzzle_input[first_space + 5:]]
+nearby_tickets = [
+    [int(y) for y in x.split(",")] for x in puzzle_input[first_space + 5 :]
+]
 
 all_intervals = [y for x in classes for y in classes[x]]
 print(all_intervals)

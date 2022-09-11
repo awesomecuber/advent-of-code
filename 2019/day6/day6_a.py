@@ -10,14 +10,16 @@ with open(os.path.join(sys.path[0], "day6.txt")) as f:
 objects: dict[str, str] = defaultdict(str)
 
 for line in puzzle_input:
-    center, orbiter = line.split(')')
+    center, orbiter = line.split(")")
     objects[orbiter] = center
+
 
 @cache
 def get_num_orbits(object):
     if object not in objects:
         return 0
     return get_num_orbits(objects[object]) + 1
+
 
 total_answer = 0
 for object in objects:

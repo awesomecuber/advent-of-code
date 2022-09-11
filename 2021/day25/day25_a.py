@@ -1,5 +1,6 @@
 # from copy import deepcopy
 from enum import Enum
+
 # from pprint import pprint
 import os
 import sys
@@ -9,10 +10,12 @@ with open(os.path.join(sys.path[0], "day25.txt")) as f:
 
 # puzzle_input = ['v..', '>..']
 
+
 class Spot(Enum):
     BLANK = 0
     RIGHT = 1
     DOWN = 2
+
 
 WIDTH = len(puzzle_input[0])
 HEIGHT = len(puzzle_input)
@@ -22,26 +25,28 @@ for line in puzzle_input:
     spots_line: list[Spot] = []
     for char in line:
         match char:
-            case '.':
+            case ".":
                 to_add = Spot.BLANK
-            case '>':
+            case ">":
                 to_add = Spot.RIGHT
-            case 'v':
+            case "v":
                 to_add = Spot.DOWN
-        spots_line.append(to_add) # type: ignore
+        spots_line.append(to_add)  # type: ignore
     spots.append(spots_line)
+
 
 def print_board(spots: list[list[Spot]]):
     for line in spots:
         for spot in line:
             match spot:
                 case Spot.BLANK:
-                    print('.', end='')
+                    print(".", end="")
                 case Spot.RIGHT:
-                    print('>', end='')
+                    print(">", end="")
                 case Spot.DOWN:
-                    print('v', end='')
+                    print("v", end="")
         print()
+
 
 things_moving = True
 step = 0

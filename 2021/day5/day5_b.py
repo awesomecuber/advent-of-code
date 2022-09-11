@@ -4,14 +4,19 @@ import sys
 with open(os.path.join(sys.path[0], "day5.txt")) as f:
     puzzle_input = f.read().splitlines()
 
-slits = [[[int(x) for x in coord.split(',')] for coord in line.split(' -> ')] for line in puzzle_input]
+slits = [
+    [[int(x) for x in coord.split(",")] for coord in line.split(" -> ")]
+    for line in puzzle_input
+]
 
 points: dict[tuple[int, int], int] = {}
+
 
 def add_point(point):
     if point not in points:
         points[point] = 0
     points[point] += 1
+
 
 for slit in slits:
     (x1, y1), (x2, y2) = slit

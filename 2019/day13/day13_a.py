@@ -1,6 +1,6 @@
 from intcode import IntCodeProgram
 
-arcade = IntCodeProgram('day13.txt')
+arcade = IntCodeProgram("day13.txt")
 output = arcade.run()
 
 tiles = []

@@ -1,20 +1,24 @@
 from intcode import IntCodeProgram
 
-brain = IntCodeProgram('day11.txt')
+brain = IntCodeProgram("day11.txt")
 
 # normal cartesian grid
 cur_spot = (0, 0)
 heading = (0, 1)
 white_panels = set()
 
+
 def rotate_cw(heading):
     return heading[1], -heading[0]
+
 
 def rotate_ccw(heading):
     return -heading[1], heading[0]
 
+
 def new_spot(cur_spot, heading):
     return cur_spot[0] + heading[0], cur_spot[1] + heading[1]
+
 
 painted_panels = set()
 
@@ -31,12 +35,12 @@ while True:
 
     if new_color_output == 0:
         white_panels.discard(cur_spot)
-    else: # its 1
+    else:  # its 1
         white_panels.add(cur_spot)
 
     if new_heading_output == 0:
         heading = rotate_ccw(heading)
-    else: # its 1
+    else:  # its 1
         heading = rotate_cw(heading)
 
     cur_spot = new_spot(cur_spot, heading)

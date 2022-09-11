@@ -30,7 +30,11 @@ while True:
                     for adjacent in adjacents:
                         other_x = x + adjacent[0]
                         other_y = y + adjacent[1]
-                        if 0 <= other_x < max_x and 0 <= other_y < max_y and energy_levels[other_y][other_x] != 0:
+                        if (
+                            0 <= other_x < max_x
+                            and 0 <= other_y < max_y
+                            and energy_levels[other_y][other_x] != 0
+                        ):
                             energy_levels[other_y][other_x] += 1
     cur_step += 1
     if flashes_this_step == max_x * max_y:

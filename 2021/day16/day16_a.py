@@ -10,6 +10,8 @@ with open(os.path.join(sys.path[0], "day16.txt")) as f:
 binary = bin(int(puzzle_input, 16))[2:].zfill(len(puzzle_input) * 4)
 
 version_num_sum = 0
+
+
 def read_packet(binary):
     global version_num_sum
 
@@ -23,10 +25,10 @@ def read_packet(binary):
     length += 6
 
     if packet_type == 4:
-        bin_num = ''
+        bin_num = ""
         keep_reading = True
         while keep_reading:
-            if binary[0] == '0':
+            if binary[0] == "0":
                 keep_reading = False
             binary = binary[1:]
             bin_num += binary[:4]
@@ -36,7 +38,7 @@ def read_packet(binary):
         length_type_id = binary[0]
         binary = binary[1:]
         length += 1
-        if length_type_id == '0':
+        if length_type_id == "0":
             sub_packets_length = int(binary[:15], 2)
             binary = binary[15:]
             length += 15
@@ -57,6 +59,7 @@ def read_packet(binary):
 
     return length
 
+
 while len(binary) > 0 and int(binary, 2) > 2:
-    binary = binary[read_packet(binary):]
+    binary = binary[read_packet(binary) :]
 print(version_num_sum)

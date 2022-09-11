@@ -6,6 +6,7 @@ with open(os.path.join(sys.path[0], "day1.txt")) as f:
 
 masses = [int(x) for x in puzzle_input]
 
+
 def find_fuel(mass):
     total_fuel = 0
     next_fuel = (mass // 3) - 2
@@ -13,6 +14,7 @@ def find_fuel(mass):
         total_fuel += next_fuel
         next_fuel = (next_fuel // 3) - 2
     return total_fuel
+
 
 total_fuel = 0
 for mass in masses:

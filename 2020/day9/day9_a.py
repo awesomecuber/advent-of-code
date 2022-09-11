@@ -9,7 +9,7 @@ puzzle_nums = [int(x) for x in puzzle_input]
 PREAMBLE_SIZE = 25
 
 for i in range(PREAMBLE_SIZE, len(puzzle_nums)):
-    nums = puzzle_nums[i - PREAMBLE_SIZE:i]
+    nums = puzzle_nums[i - PREAMBLE_SIZE : i]
     target = puzzle_nums[i]
     nums_set = set(nums)
 

@@ -6,7 +6,7 @@ import sys
 with open(os.path.join(sys.path[0], "day4.txt")) as f:
     puzzle_input = f.read().splitlines()
 
-draw_numbers = [int(x) for x in puzzle_input[0].split(',')]
+draw_numbers = [int(x) for x in puzzle_input[0].split(",")]
 puzzle_input = puzzle_input[2:]
 
 boards = []

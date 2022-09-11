@@ -4,17 +4,8 @@ import sys
 with open(os.path.join(sys.path[0], "day5.txt")) as f:
     puzzle_input = f.read()
 
-opcode_param_count = {
-    1: 3,
-    2: 3,
-    3: 1,
-    4: 1,
-    5: 2,
-    6: 2,
-    7: 3,
-    8: 3,
-    99: 0
-}
+opcode_param_count = {1: 3, 2: 3, 3: 1, 4: 1, 5: 2, 6: 2, 7: 3, 8: 3, 99: 0}
+
 
 class IntCodeProgram:
     def __init__(self, memory) -> None:
@@ -31,19 +22,26 @@ class IntCodeProgram:
         outputs = []
         while True:
             opcode = self.memory[self.cursor] % 100
-            params = self.memory[self.cursor + 1 : self.cursor + 1 + opcode_param_count[opcode]]
+            params = self.memory[
+                self.cursor + 1 : self.cursor + 1 + opcode_param_count[opcode]
+            ]
             param_modes = [
-                int(mode) for mode in reversed(str(self.memory[self.cursor] // 100).zfill(len(params)))
+                int(mode)
+                for mode in reversed(
+                    str(self.memory[self.cursor] // 100).zfill(len(params))
+                )
             ]
 
             cursor_changed = False
             match opcode:
                 case 1:
-                    self.memory[params[2]] = self.get_num(params[0], param_modes[0]) \
-                                             + self.get_num(params[1], param_modes[1])
+                    self.memory[params[2]] = self.get_num(
+                        params[0], param_modes[0]
+                    ) + self.get_num(params[1], param_modes[1])
                 case 2:
-                    self.memory[params[2]] = self.get_num(params[0], param_modes[0]) \
-                                             * self.get_num(params[1], param_modes[1])
+                    self.memory[params[2]] = self.get_num(
+                        params[0], param_modes[0]
+                    ) * self.get_num(params[1], param_modes[1])
                 case 3:
                     self.memory[params[0]] = input
                 case 4:
@@ -57,12 +55,16 @@ class IntCodeProgram:
                         self.cursor = self.get_num(params[1], param_modes[1])
                         cursor_changed = True
                 case 7:
-                    if self.get_num(params[0], param_modes[0]) < self.get_num(params[1], param_modes[1]):
+                    if self.get_num(params[0], param_modes[0]) < self.get_num(
+                        params[1], param_modes[1]
+                    ):
                         self.memory[params[2]] = 1
                     else:
                         self.memory[params[2]] = 0
                 case 8:
-                    if self.get_num(params[0], param_modes[0]) == self.get_num(params[1], param_modes[1]):
+                    if self.get_num(params[0], param_modes[0]) == self.get_num(
+                        params[1], param_modes[1]
+                    ):
                         self.memory[params[2]] = 1
                     else:
                         self.memory[params[2]] = 0
@@ -71,6 +73,7 @@ class IntCodeProgram:
             if not cursor_changed:
                 self.cursor += len(params) + 1
         return outputs
+
 
 numbers = [int(x) for x in puzzle_input.split(",")]
 

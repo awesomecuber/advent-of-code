@@ -10,25 +10,26 @@ import sys
 with open(os.path.join(sys.path[0], "day18.txt")) as f:
     puzzle_input = f.read().splitlines()
 
+
 class Number:
     def __init__(self, line):
         self.left_child: Number = None
         self.right_child: Number = None
         self.val: int = -1
 
-        if line[0] == '[':
+        if line[0] == "[":
             line = line[1:-1]
 
             i = 0
             bracket_count = 0
             while i == 0 or bracket_count > 0:
-                if line[i] == '[':
+                if line[i] == "[":
                     bracket_count += 1
-                if line[i] == ']':
+                if line[i] == "]":
                     bracket_count -= 1
                 i += 1
             left_line = line[:i]
-            right_line = line[i+1:]
+            right_line = line[i + 1 :]
 
             self.left_child = Number(left_line)
             self.right_child = Number(right_line)
@@ -36,7 +37,7 @@ class Number:
             self.val = int(line)
 
     def __add__(self, other):
-        to_return = Number('-1')
+        to_return = Number("-1")
         to_return.left_child = copy.deepcopy(self)
         to_return.right_child = copy.deepcopy(other)
         while True:
@@ -79,10 +80,10 @@ class Number:
             return self
         if self.val != -1:
             return None
-        left_exploding_pair = self.left_child.find_exploding_pair(level+1)
+        left_exploding_pair = self.left_child.find_exploding_pair(level + 1)
         if left_exploding_pair is not None:
             return left_exploding_pair
-        right_exploding_pair = self.right_child.find_exploding_pair(level+1)
+        right_exploding_pair = self.right_child.find_exploding_pair(level + 1)
         if right_exploding_pair is not None:
             return right_exploding_pair
         return None
@@ -100,12 +101,13 @@ class Number:
     def magnitude(self):
         if self.val != -1:
             return self.val
-        return 3 * self.left_child.magnitude() + 2* self.right_child.magnitude()
+        return 3 * self.left_child.magnitude() + 2 * self.right_child.magnitude()
 
     def __str__(self):
         if self.val != -1:
             return str(self.val)
-        return f'[{self.left_child},{self.right_child}]'
+        return f"[{self.left_child},{self.right_child}]"
+
 
 max_magnitude = 0
 numbers = [Number(line) for line in puzzle_input]

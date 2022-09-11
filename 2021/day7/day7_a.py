@@ -4,7 +4,7 @@ import sys
 with open(os.path.join(sys.path[0], "day7.txt")) as f:
     puzzle_input = f.read().splitlines()
 
-crab_positions = list(map(int, puzzle_input[0].split(',')))
+crab_positions = list(map(int, puzzle_input[0].split(",")))
 
 min_position = min(crab_positions)
 max_position = max(crab_positions)

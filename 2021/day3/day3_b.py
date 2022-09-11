@@ -15,15 +15,15 @@ while len(possible_oxygen_generator_ratings) > 1:
     num_ones = 0
     for line in possible_oxygen_generator_ratings:
         match line[cur_bit]:
-            case '0':
+            case "0":
                 num_zeros += 1
-            case '1':
+            case "1":
                 num_ones += 1
     new_arr = []
     for line in possible_oxygen_generator_ratings:
-        if line[cur_bit] == '0' and num_zeros > num_ones:
+        if line[cur_bit] == "0" and num_zeros > num_ones:
             new_arr.append(line)
-        if line[cur_bit] == '1' and num_zeros <= num_ones:
+        if line[cur_bit] == "1" and num_zeros <= num_ones:
             new_arr.append(line)
     possible_oxygen_generator_ratings = new_arr
     cur_bit += 1
@@ -34,15 +34,15 @@ while len(possible_co2_scrubber_ratings) > 1:
     num_ones = 0
     for line in possible_co2_scrubber_ratings:
         match line[cur_bit]:
-            case '0':
+            case "0":
                 num_zeros += 1
-            case '1':
+            case "1":
                 num_ones += 1
     new_arr = []
     for line in possible_co2_scrubber_ratings:
-        if line[cur_bit] == '0' and num_zeros <= num_ones:
+        if line[cur_bit] == "0" and num_zeros <= num_ones:
             new_arr.append(line)
-        if line[cur_bit] == '1' and num_zeros > num_ones:
+        if line[cur_bit] == "1" and num_zeros > num_ones:
             new_arr.append(line)
     possible_co2_scrubber_ratings = new_arr
     cur_bit += 1

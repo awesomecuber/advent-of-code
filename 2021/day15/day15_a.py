@@ -18,6 +18,7 @@ visited: set[tuple[int, int]] = set()
 
 to_visit: list[tuple[int, tuple[int, int]]] = [(0, (0, 0))]
 
+
 def get_unvisited_neighbors(coord: tuple[int, int]):
     to_return = []
     x, y = coord
@@ -29,11 +30,12 @@ def get_unvisited_neighbors(coord: tuple[int, int]):
             to_return.append((new_x, new_y))
     return to_return
 
+
 while len(to_visit) > 0:
     cur_dist, (x, y) = heapq.heappop(to_visit)
 
     if dists[y][x] != cur_dist:
-        continue # we already found a better dist
+        continue  # we already found a better dist
 
     for next_x, next_y in get_unvisited_neighbors((x, y)):
         old_dist = dists[next_y][next_x]

@@ -7,6 +7,7 @@ with open(os.path.join(sys.path[0], "day3.txt")) as f:
 wire_one_instructions = puzzle_input[0].split(",")
 wire_two_instructions = puzzle_input[1].split(",")
 
+
 def get_wire_locations(wire_instructions):
     wire_locations = set()
     current_coord = [0, 0]
@@ -29,6 +30,9 @@ def get_wire_locations(wire_instructions):
                 wire_locations.add(tuple(current_coord))
     return wire_locations
 
-intersections = get_wire_locations(wire_one_instructions) & get_wire_locations(wire_two_instructions)
+
+intersections = get_wire_locations(wire_one_instructions) & get_wire_locations(
+    wire_two_instructions
+)
 
 print(min(abs(x) + abs(y) for x, y in intersections))

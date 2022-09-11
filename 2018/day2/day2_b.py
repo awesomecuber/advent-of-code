@@ -15,4 +15,4 @@ for first, second in combinations(puzzle_input, 2):
             diff_seen = True
             diff_at = i
     else:
-        print(first[:diff_at] + first[diff_at+1:])
+        print(first[:diff_at] + first[diff_at + 1 :])

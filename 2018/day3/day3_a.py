@@ -15,7 +15,7 @@ for line in puzzle_input:
 
     for i in range(h):
         for j in range(w):
-            coords_times[(x+j, y+i)] += 1
+            coords_times[(x + j, y + i)] += 1
 
 answer = 0
 for count in coords_times.values():

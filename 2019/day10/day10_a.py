@@ -9,8 +9,9 @@ asteroids = set()
 
 for y, line in enumerate(puzzle_input):
     for x, char in enumerate(line):
-        if char == '#':
+        if char == "#":
             asteroids.add((x, y))
+
 
 def asteroid_visible(monitering_station, other_asteroid):
     if monitering_station == other_asteroid:
@@ -34,6 +35,7 @@ def asteroid_visible(monitering_station, other_asteroid):
         cur_spot_x += dir_x
         cur_spot_y += dir_y
     return True
+
 
 most_visible = 0
 

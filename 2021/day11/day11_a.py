@@ -29,6 +29,10 @@ for _ in range(100):
                     for adjacent in adjacents:
                         other_x = x + adjacent[0]
                         other_y = y + adjacent[1]
-                        if 0 <= other_x < max_x and 0 <= other_y < max_y and energy_levels[other_y][other_x] != 0:
+                        if (
+                            0 <= other_x < max_x
+                            and 0 <= other_y < max_y
+                            and energy_levels[other_y][other_x] != 0
+                        ):
                             energy_levels[other_y][other_x] += 1
 print(total_flashes)

@@ -29,9 +29,16 @@ for i in range(6):
     active_old_cubes = copy.deepcopy(active_cubes)
     for cube in itertools.product(range_x, range_y, range_z, range_w):
         surrounding_cubes = 0
-        for x_del, y_del, z_del, w_del in itertools.product(*([-1, 0, 1] for x in range(4))):
+        for x_del, y_del, z_del, w_del in itertools.product(
+            *([-1, 0, 1] for x in range(4))
+        ):
             if not x_del == y_del == z_del == w_del == 0:
-                other_cube = (cube[0] + x_del, cube[1] + y_del, cube[2] + z_del, cube[3] + w_del)
+                other_cube = (
+                    cube[0] + x_del,
+                    cube[1] + y_del,
+                    cube[2] + z_del,
+                    cube[3] + w_del,
+                )
                 if other_cube in active_old_cubes:
                     surrounding_cubes += 1
         if cube in active_old_cubes:

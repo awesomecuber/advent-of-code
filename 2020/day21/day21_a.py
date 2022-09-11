@@ -11,9 +11,9 @@ all_allergens = set()
 foods = []
 
 for line in puzzle_input:
-    food_ingredients, food_allergens = line.split(' (contains ')
+    food_ingredients, food_allergens = line.split(" (contains ")
     food_ingredients = set(food_ingredients.split())
-    food_allergens = set(food_allergens[:-1].split(', '))
+    food_allergens = set(food_allergens[:-1].split(", "))
     all_ingredients |= food_ingredients
     all_allergens |= food_allergens
     foods.append((food_ingredients, food_allergens))
