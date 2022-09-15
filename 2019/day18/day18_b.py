@@ -3,7 +3,7 @@ import os
 import sys
 from typing import NamedTuple
 
-with open(os.path.join(sys.path[0], "day18ex.txt")) as f:
+with open(os.path.join(sys.path[0], "day18.txt")) as f:
     vault = f.read().splitlines()
 
 coord = tuple[int, int]
@@ -17,7 +17,7 @@ pois: dict[str, coord] = {}
 for y, line in enumerate(vault):
     for x, char in enumerate(line):
         if char == "@" or char.isalpha():
-            if "@" in pois:
+            if char == "@" and "@" in pois:
                 multiple_at = True
             pois[char] = (x, y)
 
@@ -29,7 +29,7 @@ if multiple_at:
     y = y - 1
 else:
     # update vault
-    vault[y - 1] = vault[y - 1][: x - 1] + "@#@" + vault[y + 1][x + 2 :]
+    vault[y - 1] = vault[y - 1][: x - 1] + "@#@" + vault[y - 1][x + 2 :]
     vault[y] = vault[y][: x - 1] + "###" + vault[y][x + 2 :]
     vault[y + 1] = vault[y + 1][: x - 1] + "@#@" + vault[y + 1][x + 2 :]
 pois["@1"] = (x - 1, y - 1)
@@ -101,6 +101,22 @@ def get_key_reqs(vault: list[str]) -> dict[str, set[str]]:
     return key_reqs
 
 
+def get_reachable_keys(vault: list[str], start: coord) -> set[str]:
+    keys: set[str] = set()
+    horizon = [start]
+    seen = {start}
+    while len(horizon) > 0:
+        next = horizon.pop()
+        char = vault[next[1]][next[0]]
+        if char.islower():
+            keys.add(char)
+        for neighbor in get_neighbors(vault, next):
+            if neighbor not in seen:
+                horizon.append(neighbor)
+                seen.add(neighbor)
+    return keys
+
+
 def get_possible_next_keys(
     key_reqs: dict[str, set[str]], own_keys: frozenset[str]
 ) -> set[str]:
@@ -127,9 +143,6 @@ def get_dist(vault: list[str], start: coord, end: coord) -> int:
     return -1
 
 
-# def move_to_key()
-
-
 class MazeState(NamedTuple):
     pos1: str
     pos2: str
@@ -141,6 +154,11 @@ class MazeState(NamedTuple):
 key_reqs = get_key_reqs(vault)
 num_keys = len([k for k in pois.keys() if k.islower()])
 
+keys1 = get_reachable_keys(vault, pois["@1"])
+keys2 = get_reachable_keys(vault, pois["@2"])
+keys3 = get_reachable_keys(vault, pois["@3"])
+keys4 = get_reachable_keys(vault, pois["@4"])
+
 dist_cache: dict[tuple[str, str], int] = {}
 
 init = MazeState("@1", "@2", "@3", "@4", frozenset())
@@ -150,17 +168,31 @@ heappush(horizon, (0, init))
 dists = {init: 0}
 while len(horizon) > 0:
     dist, cur = heappop(horizon)
+    # print(f"{len(cur.keys_so_far)}/{num_keys}")
     if len(cur.keys_so_far) == num_keys:
         print(dist)
         break
     for next_key in get_possible_next_keys(key_reqs, cur.keys_so_far):
-        next = MazeState(next_key, cur.keys_so_far | set(next_key))
-        if (cur.pos, next_key) in dist_cache:
-            dist_incr = dist_cache[cur.pos, next_key]
+        new_keys_seen = cur.keys_so_far | set(next_key)
+        if next_key in keys1:
+            move_pos = cur.pos1
+            next = MazeState(next_key, cur.pos2, cur.pos3, cur.pos4, new_keys_seen)
+        elif next_key in keys2:
+            move_pos = cur.pos2
+            next = MazeState(cur.pos1, next_key, cur.pos3, cur.pos4, new_keys_seen)
+        elif next_key in keys3:
+            move_pos = cur.pos3
+            next = MazeState(cur.pos1, cur.pos2, next_key, cur.pos4, new_keys_seen)
+        elif next_key in keys4:
+            move_pos = cur.pos4
+            next = MazeState(cur.pos1, cur.pos2, cur.pos3, next_key, new_keys_seen)
+
+        if (move_pos, next_key) in dist_cache:
+            dist_incr = dist_cache[move_pos, next_key]
         else:
-            dist_incr = get_dist(vault, pois[cur.pos], pois[next_key])
-            dist_cache[cur.pos, next_key] = dist_incr
-            dist_cache[next_key, cur.pos] = dist_incr
+            dist_incr = get_dist(vault, pois[move_pos], pois[next_key])
+            dist_cache[move_pos, next_key] = dist_incr
+            dist_cache[next_key, move_pos] = dist_incr
         if dist_incr == -1:
             continue
         if next not in dists or dist + dist_incr < dists[next]:
