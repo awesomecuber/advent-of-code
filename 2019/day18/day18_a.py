@@ -3,7 +3,7 @@ import os
 import sys
 from typing import NamedTuple
 
-with open(os.path.join(sys.path[0], "day18ex.txt")) as f:
+with open(os.path.join(sys.path[0], "day18.txt")) as f:
     vault = f.read().splitlines()
 
 coord = tuple[int, int]

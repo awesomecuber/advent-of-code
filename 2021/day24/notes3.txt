@@ -1,0 +1,6 @@
+w = input (1 through 9)
+x = z % 26 + (var1)
+z /= 1 OR 26
+if x != w {
+    z = 26z + w + (var2)
+}
