@@ -1,28 +1,31 @@
 use crate::Problem;
 
-pub struct Day1;
+pub struct Day1 {
+    elves: Vec<Vec<u64>>,
+}
 
 impl Problem for Day1 {
-    type Data = Vec<Vec<u64>>;
     type Output = u64;
 
-    fn to_data(input: &str) -> Self::Data {
-        input
+    fn new(input: &str) -> Self {
+        let elves = input
             .split("\n\n")
             .map(|elf| elf.lines().map(|x| x.parse().unwrap()).collect())
-            .collect()
+            .collect();
+        Day1 { elves }
     }
 
-    fn part1(data: &Self::Data) -> Self::Output {
-        data.iter().map(|elf| elf.iter().sum()).max().unwrap()
+    fn part1(&self) -> Self::Output {
+        self.elves.iter().map(|elf| elf.iter().sum()).max().unwrap()
     }
 
-    fn part2(data: &Self::Data) -> Self::Output {
-        let mut elves = data
+    fn part2(&self) -> Self::Output {
+        let mut elve_calories = self
+            .elves
             .iter()
             .map(|elf| elf.iter().sum())
             .collect::<Vec<u64>>();
-        elves.sort_unstable();
-        elves.into_iter().rev().take(3).sum()
+        elve_calories.sort_unstable();
+        elve_calories.into_iter().rev().take(3).sum()
     }
 }

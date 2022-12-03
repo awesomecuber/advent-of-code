@@ -2,7 +2,9 @@ use parse_display::FromStr;
 
 use crate::Problem;
 
-pub struct Day2;
+pub struct Day2 {
+    strategies: Vec<Strategy>,
+}
 
 #[derive(Clone, Copy, FromStr)]
 enum Left {
@@ -29,16 +31,17 @@ pub struct Strategy {
 }
 
 impl Problem for Day2 {
-    type Data = Vec<Strategy>;
-
     type Output = u64;
 
-    fn to_data(input: &str) -> Self::Data {
-        input.lines().map(|l| l.parse().unwrap()).collect()
+    fn new(input: &str) -> Self {
+        Day2 {
+            strategies: input.lines().map(|l| l.parse().unwrap()).collect(),
+        }
     }
 
-    fn part1(data: &Self::Data) -> Self::Output {
-        data.iter()
+    fn part1(&self) -> Self::Output {
+        self.strategies
+            .iter()
             .map(|strategy| {
                 let left = strategy.left;
                 let right = strategy.right;
@@ -63,8 +66,9 @@ impl Problem for Day2 {
             .sum()
     }
 
-    fn part2(data: &Self::Data) -> Self::Output {
-        data.iter()
+    fn part2(&self) -> Self::Output {
+        self.strategies
+            .iter()
             .map(|strategy| {
                 let left = strategy.left;
                 let right = strategy.right;

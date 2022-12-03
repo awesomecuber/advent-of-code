@@ -4,7 +4,9 @@ use itertools::Itertools;
 
 use crate::Problem;
 
-pub struct Day3;
+pub struct Day3 {
+    rucksacks: Vec<String>,
+}
 
 fn priority(char: char) -> u64 {
     assert!(char.is_ascii_alphabetic());
@@ -23,16 +25,17 @@ fn test_priority() {
 }
 
 impl Problem for Day3 {
-    type Data = Vec<String>;
-
     type Output = u64;
 
-    fn to_data(input: &str) -> Self::Data {
-        input.lines().map(|l| l.into()).collect()
+    fn new(input: &str) -> Self {
+        Day3 {
+            rucksacks: input.lines().map(|l| l.into()).collect(),
+        }
     }
 
-    fn part1(data: &Self::Data) -> Self::Output {
-        data.iter()
+    fn part1(&self) -> Self::Output {
+        self.rucksacks
+            .iter()
             .map(|line| {
                 let left: HashSet<_> = line[line.len() / 2..].chars().collect();
                 let right: HashSet<_> = line[..line.len() / 2].chars().collect();
@@ -44,8 +47,9 @@ impl Problem for Day3 {
             .sum()
     }
 
-    fn part2(data: &Self::Data) -> Self::Output {
-        data.iter()
+    fn part2(&self) -> Self::Output {
+        self.rucksacks
+            .iter()
             .tuples()
             .map(|(a, b, c)| {
                 let a: HashSet<_> = a.chars().collect();
