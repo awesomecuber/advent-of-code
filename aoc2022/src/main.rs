@@ -21,7 +21,7 @@ macro_rules! solve {
     };
 }
 
-fn main() {    
+fn main() {
     // solve!(day1::Day1, "./inputs/day1.txt");
     // solve!(day2::Day2, "./inputs/day2.txt");
     solve!(day3::Day3, "./inputs/day3.txt");

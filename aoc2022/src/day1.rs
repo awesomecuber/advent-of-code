@@ -14,10 +14,7 @@ impl Problem for Day1 {
     }
 
     fn part1(data: &Self::Data) -> Self::Output {
-        data.iter()
-            .map(|elf| elf.iter().sum())
-            .max()
-            .unwrap()
+        data.iter().map(|elf| elf.iter().sum()).max().unwrap()
     }
 
     fn part2(data: &Self::Data) -> Self::Output {

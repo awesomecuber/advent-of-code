@@ -28,10 +28,7 @@ impl Problem for Day3 {
     type Output = u64;
 
     fn to_data(input: &str) -> Self::Data {
-        input
-            .lines()
-            .map(|l| l.into())
-            .collect()
+        input.lines().map(|l| l.into()).collect()
     }
 
     fn part1(data: &Self::Data) -> Self::Output {
@@ -48,13 +45,16 @@ impl Problem for Day3 {
     }
 
     fn part2(data: &Self::Data) -> Self::Output {
-        data.iter().tuples().map(|(a, b, c)| {
-            let a: HashSet<_> = a.chars().collect();
-            let b: HashSet<_> = b.chars().collect();
-            let c: HashSet<_> = c.chars().collect();
-            let intersection = &(&a & &b) & &c;
-            assert_eq!(1, intersection.len());
-            priority(*intersection.iter().next().unwrap())
-        }).sum()
+        data.iter()
+            .tuples()
+            .map(|(a, b, c)| {
+                let a: HashSet<_> = a.chars().collect();
+                let b: HashSet<_> = b.chars().collect();
+                let c: HashSet<_> = c.chars().collect();
+                let intersection = &(&a & &b) & &c;
+                assert_eq!(1, intersection.len());
+                priority(*intersection.iter().next().unwrap())
+            })
+            .sum()
     }
 }
