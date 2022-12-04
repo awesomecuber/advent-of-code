@@ -6,7 +6,7 @@ pub struct Day2 {
     strategies: Vec<Strategy>,
 }
 
-#[derive(Clone, Copy, FromStr)]
+#[derive(FromStr)]
 enum Left {
     #[display("A")]
     Rock,
@@ -16,7 +16,7 @@ enum Left {
     Scissors,
 }
 
-#[derive(Clone, Copy, FromStr)]
+#[derive(FromStr)]
 enum Right {
     X,
     Y,
@@ -43,8 +43,7 @@ impl Problem for Day2 {
         self.strategies
             .iter()
             .map(|strategy| {
-                let left = strategy.left;
-                let right = strategy.right;
+                let Strategy { left, right } = strategy;
                 let outcome_score = match (left, right) {
                     (Left::Rock, Right::X) => 3,
                     (Left::Rock, Right::Y) => 6,
@@ -70,8 +69,7 @@ impl Problem for Day2 {
         self.strategies
             .iter()
             .map(|strategy| {
-                let left = strategy.left;
-                let right = strategy.right;
+                let Strategy { left, right } = strategy;
                 let outcome_score = match right {
                     Right::X => 0,
                     Right::Y => 3,

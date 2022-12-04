@@ -3,6 +3,7 @@ use std::fmt;
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 pub trait Problem {
     type Output: fmt::Display;
@@ -19,7 +20,8 @@ fn solve<P: Problem>(input: &str) {
 }
 
 fn main() {
-    solve::<day1::Day1>("./inputs/day1.txt");
-    solve::<day2::Day2>("./inputs/day2.txt");
-    solve::<day3::Day3>("./inputs/day3.txt");
+    // solve::<day1::Day1>("./inputs/day1.txt");
+    // solve::<day2::Day2>("./inputs/day2.txt");
+    // solve::<day3::Day3>("./inputs/day3.txt");
+    solve::<day4::Day4>("./inputs/day4.txt");
 }
