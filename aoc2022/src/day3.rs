@@ -62,3 +62,17 @@ impl Problem for Day3 {
             .sum()
     }
 }
+
+#[test]
+fn example() {
+    let problem = Day3::new(
+        "vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw",
+    );
+    assert_eq!(157, problem.part1());
+    assert_eq!(70, problem.part2());
+}

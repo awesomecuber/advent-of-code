@@ -91,3 +91,14 @@ impl Problem for Day2 {
             .sum()
     }
 }
+
+#[test]
+fn example() {
+    let problem = Day2::new(
+        "A Y
+B X
+C Z",
+    );
+    assert_eq!(15, problem.part1());
+    assert_eq!(12, problem.part2());
+}

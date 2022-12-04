@@ -29,3 +29,25 @@ impl Problem for Day1 {
         elve_calories.into_iter().rev().take(3).sum()
     }
 }
+
+#[test]
+fn example() {
+    let problem = Day1::new(
+        "1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000",
+    );
+    assert_eq!(24000, problem.part1());
+    assert_eq!(45000, problem.part2());
+}
