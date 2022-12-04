@@ -1,9 +1,6 @@
 use std::{env, fmt, fs};
 
-mod day1;
-mod day2;
-mod day3;
-mod day4;
+mod solutions;
 
 pub trait Problem {
     type Output: fmt::Display;
@@ -26,10 +23,10 @@ fn main() {
         .parse()
         .expect("Expected integer");
     let solve = match day {
-        1 => solve::<day1::Day1>,
-        2 => solve::<day2::Day2>,
-        3 => solve::<day3::Day3>,
-        4 => solve::<day4::Day4>,
+        1 => solve::<solutions::Day1>,
+        2 => solve::<solutions::Day2>,
+        3 => solve::<solutions::Day3>,
+        4 => solve::<solutions::Day4>,
         _ => panic!("invalid day"),
     };
     let (part1, part2) = solve(&format!("./inputs/day{day}.txt"));
