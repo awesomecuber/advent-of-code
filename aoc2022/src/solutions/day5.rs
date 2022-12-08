@@ -59,7 +59,7 @@ impl Problem for Day5 {
     }
 
     fn part1(&self) -> Self::Output {
-        let mut crate_piles = self.crate_piles.to_vec();
+        let mut crate_piles = self.crate_piles.clone();
         for inst in &self.instructions {
             for _ in 0..inst.count {
                 let removed = crate_piles[inst.from - 1].pop().unwrap();
@@ -70,7 +70,7 @@ impl Problem for Day5 {
     }
 
     fn part2(&self) -> Self::Output {
-        let mut crate_piles = self.crate_piles.to_vec();
+        let mut crate_piles = self.crate_piles.clone();
         for inst in &self.instructions {
             let mut all_removed = Vec::new();
             for _ in 0..inst.count {

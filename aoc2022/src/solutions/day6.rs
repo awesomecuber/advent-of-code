@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use itertools::Itertools;
 
 use crate::Problem;
 
@@ -13,7 +13,7 @@ impl Day6 {
             .chars()
             .collect::<Vec<_>>()
             .windows(window_size)
-            .position(|w| w.iter().collect::<HashSet<_>>().len() == window_size)
+            .position(|w| w.iter().all_unique())
             .unwrap()
             + window_size) as u64
     }

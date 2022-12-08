@@ -29,6 +29,8 @@ fn main() {
         4 => solve::<solutions::Day4>,
         5 => solve::<solutions::Day5>,
         6 => solve::<solutions::Day6>,
+        7 => solve::<solutions::Day7>,
+        8 => solve::<solutions::Day8>,
         _ => panic!("Invalid day"),
     };
     let (part1, part2) = solve(&format!("./inputs/day{day}.txt"));
