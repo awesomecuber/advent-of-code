@@ -20,7 +20,8 @@ impl Day6 {
 }
 
 impl Problem for Day6 {
-    type Output = u64;
+    type Output1 = u64;
+    type Output2 = u64;
 
     fn new(input: &str) -> Self {
         Day6 {
@@ -28,11 +29,11 @@ impl Problem for Day6 {
         }
     }
 
-    fn part1(&self) -> Self::Output {
+    fn part1(&self) -> Self::Output1 {
         self.solve(4)
     }
 
-    fn part2(&self) -> Self::Output {
+    fn part2(&self) -> Self::Output2 {
         self.solve(14)
     }
 }

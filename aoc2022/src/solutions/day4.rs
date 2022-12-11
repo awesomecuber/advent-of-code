@@ -23,7 +23,8 @@ struct Line {
 }
 
 impl Problem for Day4 {
-    type Output = u64;
+    type Output1 = u64;
+    type Output2 = u64;
 
     fn new(input: &str) -> Self {
         let assignment_pairs = input
@@ -46,7 +47,7 @@ impl Problem for Day4 {
         Day4 { assignment_pairs }
     }
 
-    fn part1(&self) -> Self::Output {
+    fn part1(&self) -> Self::Output1 {
         self.assignment_pairs
             .iter()
             .filter(|AssignmentPair { smaller, larger }| {
@@ -55,7 +56,7 @@ impl Problem for Day4 {
             .count() as u64
     }
 
-    fn part2(&self) -> Self::Output {
+    fn part2(&self) -> Self::Output2 {
         self.assignment_pairs
             .iter()
             .filter(|AssignmentPair { smaller, larger }| {

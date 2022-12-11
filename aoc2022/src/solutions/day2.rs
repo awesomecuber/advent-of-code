@@ -31,7 +31,8 @@ pub struct Strategy {
 }
 
 impl Problem for Day2 {
-    type Output = u64;
+    type Output1 = u64;
+    type Output2 = u64;
 
     fn new(input: &str) -> Self {
         Day2 {
@@ -39,7 +40,7 @@ impl Problem for Day2 {
         }
     }
 
-    fn part1(&self) -> Self::Output {
+    fn part1(&self) -> Self::Output1 {
         self.strategies
             .iter()
             .map(|strategy| {
@@ -65,7 +66,7 @@ impl Problem for Day2 {
             .sum()
     }
 
-    fn part2(&self) -> Self::Output {
+    fn part2(&self) -> Self::Output2 {
         self.strategies
             .iter()
             .map(|strategy| {

@@ -60,7 +60,8 @@ impl Dir {
 }
 
 impl Problem for Day8 {
-    type Output = u64;
+    type Output1 = u64;
+    type Output2 = u64;
 
     fn new(input: &str) -> Self {
         let trees = input
@@ -70,7 +71,7 @@ impl Problem for Day8 {
         Day8 { trees }
     }
 
-    fn part1(&self) -> Self::Output {
+    fn part1(&self) -> Self::Output1 {
         let mut can_see: HashSet<(usize, usize)> = HashSet::new();
         let size = self.trees[0].len();
 
@@ -94,7 +95,7 @@ impl Problem for Day8 {
         can_see.len() as u64
     }
 
-    fn part2(&self) -> Self::Output {
+    fn part2(&self) -> Self::Output2 {
         let mut best_total = 0;
 
         let size = self.trees[0].len();

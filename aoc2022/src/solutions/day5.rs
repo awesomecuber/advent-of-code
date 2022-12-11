@@ -22,7 +22,8 @@ fn read_crate_piles(piles: &[Vec<u8>]) -> String {
 }
 
 impl Problem for Day5 {
-    type Output = String;
+    type Output1 = String;
+    type Output2 = String;
 
     fn new(input: &str) -> Self {
         let lines: Vec<_> = input.lines().map(|l| l.as_bytes()).collect();
@@ -58,7 +59,7 @@ impl Problem for Day5 {
         }
     }
 
-    fn part1(&self) -> Self::Output {
+    fn part1(&self) -> Self::Output1 {
         let mut crate_piles = self.crate_piles.clone();
         for inst in &self.instructions {
             for _ in 0..inst.count {
@@ -69,7 +70,7 @@ impl Problem for Day5 {
         read_crate_piles(&crate_piles)
     }
 
-    fn part2(&self) -> Self::Output {
+    fn part2(&self) -> Self::Output2 {
         let mut crate_piles = self.crate_piles.clone();
         for inst in &self.instructions {
             let mut all_removed = Vec::new();

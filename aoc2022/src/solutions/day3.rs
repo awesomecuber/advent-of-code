@@ -25,7 +25,8 @@ fn test_priority() {
 }
 
 impl Problem for Day3 {
-    type Output = u64;
+    type Output1 = u64;
+    type Output2 = u64;
 
     fn new(input: &str) -> Self {
         Day3 {
@@ -33,7 +34,7 @@ impl Problem for Day3 {
         }
     }
 
-    fn part1(&self) -> Self::Output {
+    fn part1(&self) -> Self::Output1 {
         self.rucksacks
             .iter()
             .map(|line| {
@@ -47,7 +48,7 @@ impl Problem for Day3 {
             .sum()
     }
 
-    fn part2(&self) -> Self::Output {
+    fn part2(&self) -> Self::Output2 {
         self.rucksacks
             .iter()
             .tuples()

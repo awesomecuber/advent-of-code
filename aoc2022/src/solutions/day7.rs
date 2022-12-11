@@ -85,7 +85,8 @@ impl FileSystem {
 }
 
 impl Problem for Day7 {
-    type Output = u64;
+    type Output1 = u64;
+    type Output2 = u64;
 
     fn new(input: &str) -> Self {
         let mut commands = Vec::new();
@@ -111,14 +112,14 @@ impl Problem for Day7 {
         Day7 { commands }
     }
 
-    fn part1(&self) -> Self::Output {
+    fn part1(&self) -> Self::Output1 {
         // first line is cd /
         let home_dir = FileSystem::new_dir("/", &mut self.commands.iter().skip(1));
         let (dir_sizes, _) = home_dir.get_dir_sizes();
         dir_sizes.iter().filter(|&s| *s <= 100000).sum()
     }
 
-    fn part2(&self) -> Self::Output {
+    fn part2(&self) -> Self::Output2 {
         // first line is cd /
         let home_dir = FileSystem::new_dir("/", &mut self.commands.iter().skip(1));
         let (dir_sizes, total_size) = home_dir.get_dir_sizes();
@@ -158,6 +159,7 @@ $ ls
 5626152 d.ext
 7214296 k",
     );
+    println!("{:#?}", problem.commands);
     assert_eq!(95437, problem.part1());
     assert_eq!(24933642, problem.part2());
 }

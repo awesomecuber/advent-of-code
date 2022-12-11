@@ -5,7 +5,8 @@ pub struct Day1 {
 }
 
 impl Problem for Day1 {
-    type Output = u64;
+    type Output1 = u64;
+    type Output2 = u64;
 
     fn new(input: &str) -> Self {
         let elves = input
@@ -15,11 +16,11 @@ impl Problem for Day1 {
         Day1 { elves }
     }
 
-    fn part1(&self) -> Self::Output {
+    fn part1(&self) -> Self::Output1 {
         self.elves.iter().map(|elf| elf.iter().sum()).max().unwrap()
     }
 
-    fn part2(&self) -> Self::Output {
+    fn part2(&self) -> Self::Output2 {
         let mut elve_calories = self
             .elves
             .iter()
