@@ -1,11 +1,8 @@
-use std::{
-    collections::HashSet,
-    ops::{AddAssign, Sub},
-};
+use std::collections::HashSet;
 
 use parse_display::FromStr;
 
-use crate::Problem;
+use crate::{utils::Coord, Problem};
 
 pub struct Day9 {
     instructions: Vec<Instruction>,
@@ -41,33 +38,12 @@ impl Direction {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
-struct Coord(i64, i64);
-
-impl Coord {
-    fn diff(head: Self, tail: Self) -> Self {
-        let diff = head - tail;
-        if diff.0.abs() <= 1 && diff.1.abs() <= 1 {
-            return Coord(0, 0);
-        }
-
-        Coord(diff.0.signum(), diff.1.signum())
+fn diff(head: Coord, tail: Coord) -> Coord {
+    let diff = head - tail;
+    if diff.0.abs() <= 1 && diff.1.abs() <= 1 {
+        return Coord(0, 0);
     }
-}
-
-impl AddAssign for Coord {
-    fn add_assign(&mut self, rhs: Self) {
-        self.0 += rhs.0;
-        self.1 += rhs.1;
-    }
-}
-
-impl Sub for Coord {
-    type Output = Coord;
-
-    fn sub(self, rhs: Self) -> Self::Output {
-        Coord(self.0 - rhs.0, self.1 - rhs.1)
-    }
+    Coord(diff.0.signum(), diff.1.signum())
 }
 
 impl Day9 {
@@ -80,7 +56,7 @@ impl Day9 {
             for _ in 0..instruction.count {
                 string[0] += incr;
                 for i in 0..(string.len() - 1) {
-                    let diff = Coord::diff(string[i], string[i + 1]);
+                    let diff = diff(string[i], string[i + 1]);
                     if diff == Coord(0, 0) {
                         break;
                     }

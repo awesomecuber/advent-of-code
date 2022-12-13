@@ -1,6 +1,7 @@
 use std::{env, fmt, fs};
 
 mod solutions;
+mod utils;
 
 pub trait Problem {
     type Output1: fmt::Display + 'static;
@@ -21,7 +22,7 @@ fn main() {
     match env::args().nth(1) {
         Some(day) => solve_day(day.parse().expect("Expected integer")),
         None => {
-            for day in 1..=11 {
+            for day in 1..=12 {
                 println!("\nDAY {day}");
                 solve_day(day);
             }
@@ -42,6 +43,7 @@ fn solve_day(day: u64) {
         9 => solve::<solutions::Day9>,
         10 => solve::<solutions::Day10>,
         11 => solve::<solutions::Day11>,
+        12 => solve::<solutions::Day12>,
         _ => panic!("Invalid day"),
     };
     let (part1, part2) = solve(&format!("./inputs/day{day}.txt"));

@@ -1,9 +1,12 @@
 use std::collections::HashSet;
 
-use crate::Problem;
+use crate::{
+    utils::{Coord, Grid},
+    Problem,
+};
 
 pub struct Day8 {
-    trees: Vec<Vec<u64>>,
+    trees: Grid<u64>,
 }
 
 enum Dir {
@@ -14,16 +17,17 @@ enum Dir {
 }
 
 impl Dir {
-    fn get_pos(&self, pos: usize, depth: usize, size: usize) -> (usize, usize) {
+    fn get_pos(&self, pos: i64, depth: i64, size: i64) -> Coord {
         match self {
-            Dir::Left => (depth, pos),
-            Dir::Top => (pos, depth),
-            Dir::Right => (size - 1 - depth, pos),
-            Dir::Bot => (pos, size - 1 - depth),
+            Dir::Left => Coord(depth, pos),
+            Dir::Top => Coord(pos, depth),
+            Dir::Right => Coord(size - 1 - depth, pos),
+            Dir::Bot => Coord(pos, size - 1 - depth),
         }
     }
 
-    fn incr_pos(&self, x: usize, y: usize, depth: usize, size: usize) -> Option<(usize, usize)> {
+    fn incr_pos(&self, curr: Coord, depth: i64, size: i64) -> Option<Coord> {
+        let Coord(x, y) = curr;
         assert!(x < size);
         assert!(y < size);
         match self {
@@ -31,28 +35,28 @@ impl Dir {
                 if depth > x {
                     None
                 } else {
-                    Some((x - depth, y))
+                    Some(Coord(x - depth, y))
                 }
             }
             Dir::Top => {
                 if depth > y {
                     None
                 } else {
-                    Some((x, y - depth))
+                    Some(Coord(x, y - depth))
                 }
             }
             Dir::Right => {
-                if x + depth >= size {
+                if x >= size - depth {
                     None
                 } else {
-                    Some((x + depth, y))
+                    Some(Coord(x + depth, y))
                 }
             }
             Dir::Bot => {
-                if y + depth >= size {
+                if y >= size - depth {
                     None
                 } else {
-                    Some((x, y + depth))
+                    Some(Coord(x, y + depth))
                 }
             }
         }
@@ -68,22 +72,24 @@ impl Problem for Day8 {
             .lines()
             .map(|l| l.chars().map(|c| c.to_digit(10).unwrap() as u64).collect())
             .collect();
-        Day8 { trees }
+        Day8 {
+            trees: Grid { grid: trees },
+        }
     }
 
     fn part1(&self) -> Self::Output1 {
-        let mut can_see: HashSet<(usize, usize)> = HashSet::new();
-        let size = self.trees[0].len();
+        let mut can_see: HashSet<Coord> = HashSet::new();
+        let size = self.trees.width(); // width == height
 
         for dir in [Dir::Left, Dir::Top, Dir::Right, Dir::Bot] {
             for pos in 0..size {
-                let cur_pos = dir.get_pos(pos, 0, size);
-                let cur = self.trees[cur_pos.1][cur_pos.0];
+                let cur_pos = dir.get_pos(pos as i64, 0, size as i64);
+                let cur = self.trees.coord_get(cur_pos);
                 can_see.insert(cur_pos);
                 let mut highest = cur;
                 for depth in 1..size {
-                    let cur_pos = dir.get_pos(pos, depth, size);
-                    let cur = self.trees[cur_pos.1][cur_pos.0];
+                    let cur_pos = dir.get_pos(pos as i64, depth as i64, size as i64);
+                    let cur = self.trees.coord_get(cur_pos);
                     if cur > highest {
                         can_see.insert(cur_pos);
                         highest = cur;
@@ -97,21 +103,22 @@ impl Problem for Day8 {
 
     fn part2(&self) -> Self::Output2 {
         let mut best_total = 0;
+        let size = self.trees.width(); // width == height
 
-        let size = self.trees[0].len();
         for x in 1..(size - 1) {
             for y in 1..(size - 1) {
                 let mut total = 1;
-                let start_height = self.trees[y][x];
+                let curr = Coord(x as i64, y as i64);
+                let start_height = self.trees.coord_get(curr);
                 for dir in [Dir::Left, Dir::Top, Dir::Right, Dir::Bot] {
                     let mut dir_score = 0;
                     for depth in 1.. {
-                        let spot = match dir.incr_pos(x, y, depth, size) {
+                        let spot = match dir.incr_pos(curr, depth, size as i64) {
                             Some(spot) => spot,
                             None => break,
                         };
                         dir_score += 1;
-                        let other_height = self.trees[spot.1][spot.0];
+                        let other_height = self.trees.coord_get(spot);
                         if other_height >= start_height {
                             break;
                         }
