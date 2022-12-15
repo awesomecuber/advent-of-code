@@ -70,6 +70,8 @@ impl Problem for Day12 {
 
     fn part2(&self) -> Self::Output2 {
         // very unoptimized!
+        // better way would be to only look at "a" spots if they
+        // haven't been in a path already
         let mut best = None;
         for y in 0..self.grid.height() {
             for x in 0..self.grid.width() {
