@@ -41,8 +41,7 @@ impl Problem for Day11 {
 
     fn new(input: &str) -> Self {
         let mut monkeys = Vec::new();
-        for monkey_text in input.split("\n\n") {
-            let lines: Vec<_> = monkey_text.lines().collect();
+        for lines in input.lines().collect::<Vec<_>>().split(|l| l.is_empty()) {
             let items = lines[1]
                 .strip_prefix("  Starting items: ")
                 .unwrap()

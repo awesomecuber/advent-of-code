@@ -10,8 +10,10 @@ impl Problem for Day1 {
 
     fn new(input: &str) -> Self {
         let elves = input
-            .split("\n\n")
-            .map(|elf| elf.lines().map(|x| x.parse().unwrap()).collect())
+            .lines()
+            .collect::<Vec<_>>()
+            .split(|l| l.is_empty())
+            .map(|elf| elf.iter().map(|x| x.parse().unwrap()).collect())
             .collect();
         Day1 { elves }
     }

@@ -4,7 +4,10 @@ use std::fmt::Display;
 use std::hash::Hash;
 use std::ops::{Add, AddAssign, Sub};
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+use parse_display::FromStr;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, FromStr)]
+#[display("{0},{1}")]
 pub struct Coord(pub i64, pub i64);
 
 impl Coord {

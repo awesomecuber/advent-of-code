@@ -21,8 +21,15 @@ impl Day12 {
             .collect()
     }
 
-    fn solve_from(&self, start: Coord) -> Option<u64> {
-        utils::bfs(&start, |&n| self.successors(n), |&n| self.end == n).map(|a| a.len() as u64)
+    fn successors_back(&self, curr: Coord) -> Vec<Coord> {
+        let curr_height = self.grid.coord_get(curr).unwrap();
+        curr.get_adjacent()
+            .into_iter()
+            .filter(|&other| {
+                self.grid.coord_get(other).is_some()
+                    && *self.grid.coord_get(other).unwrap() >= curr_height - 1
+            })
+            .collect()
     }
 }
 
@@ -65,29 +72,19 @@ impl Problem for Day12 {
     }
 
     fn part1(&self) -> Self::Output1 {
-        self.solve_from(self.start).unwrap()
+        utils::bfs(&self.start, |&n| self.successors(n), |&n| self.end == n)
+            .map(|a| a.len() as u64)
+            .unwrap()
     }
 
     fn part2(&self) -> Self::Output2 {
-        // very unoptimized!
-        // better way would be to only look at "a" spots if they
-        // haven't been in a path already
-        let mut best = None;
-        for y in 0..self.grid.height() {
-            for x in 0..self.grid.width() {
-                let curr = Coord(x as i64, y as i64);
-                if *self.grid.coord_get(curr).unwrap() == b'a' {
-                    let this_solution = self.solve_from(curr);
-                    if let Some(dist) = this_solution {
-                        best = match best {
-                            Some(curr) => Some(dist.min(curr)),
-                            None => Some(dist),
-                        }
-                    }
-                }
-            }
-        }
-        best.unwrap()
+        utils::bfs(
+            &self.end,
+            |&n| self.successors_back(n),
+            |&n| *self.grid.coord_get(n).unwrap() == b'a',
+        )
+        .map(|a| a.len() as u64)
+        .unwrap()
     }
 }
 
