@@ -22,7 +22,7 @@ fn main() {
     match env::args().nth(1) {
         Some(day) => solve_day(day.parse().expect("Expected integer")),
         None => {
-            for day in 1..=14 {
+            for day in 1..=16 {
                 println!("\nDAY {day}");
                 solve_day(day);
             }
@@ -47,6 +47,7 @@ fn solve_day(day: u64) {
         13 => solve::<solutions::Day13>,
         14 => solve::<solutions::Day14>,
         15 => solve::<solutions::Day15>,
+        16 => solve::<solutions::Day16>,
         _ => panic!("Invalid day"),
     };
     let (part1, part2) = solve(&format!("./inputs/day{day}.txt"));

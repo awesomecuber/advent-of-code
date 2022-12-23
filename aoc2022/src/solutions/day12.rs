@@ -72,19 +72,21 @@ impl Problem for Day12 {
     }
 
     fn part1(&self) -> Self::Output1 {
-        utils::bfs(&self.start, |&n| self.successors(n), |&n| self.end == n)
-            .map(|a| a.len() as u64)
+        (utils::bfs(&self.start, |&n| self.successors(n), |&n| self.end == n)
             .unwrap()
+            .len()
+            - 1) as u64
     }
 
     fn part2(&self) -> Self::Output2 {
-        utils::bfs(
+        (utils::bfs(
             &self.end,
             |&n| self.successors_back(n),
             |&n| *self.grid.coord_get(n).unwrap() == b'a',
         )
-        .map(|a| a.len() as u64)
         .unwrap()
+        .len()
+            - 1) as u64
     }
 }
 
