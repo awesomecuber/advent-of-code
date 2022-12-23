@@ -1,5 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
+use itertools::Itertools;
 use parse_display::FromStr;
 
 use crate::Problem;
@@ -13,7 +14,7 @@ pub struct Day16 {
 struct Line(String, u64, String);
 
 impl Day16 {
-    fn get_paths(&self, start: &str) -> HashMap<String, HashSet<(String, u64)>> {
+    fn get_paths(&self, start: &str) -> HashMap<String, HashMap<String, u64>> {
         let mut paths = HashMap::new();
         for (valve, (flow, _)) in &self.valves {
             if valve == start || *flow != 0 {
@@ -23,8 +24,8 @@ impl Day16 {
         paths
     }
 
-    fn dists_from(&self, valve: &str) -> HashSet<(String, u64)> {
-        let mut dists = HashSet::new();
+    fn dists_from(&self, valve: &str) -> HashMap<String, u64> {
+        let mut dists = HashMap::new();
 
         let mut seen = HashSet::new();
         let mut horizon = HashSet::new();
@@ -36,7 +37,7 @@ impl Day16 {
             for node in std::mem::take(&mut horizon) {
                 let (flow, connected) = self.valves.get(node).unwrap();
                 if *flow != 0 && dist != 0 {
-                    dists.insert((node.to_owned(), dist));
+                    dists.insert(node.to_owned(), dist);
                 }
                 for neighbor in connected {
                     if seen.insert(neighbor) {
@@ -52,25 +53,26 @@ impl Day16 {
     fn best_from(
         &self,
         currently_at: &str,
-        open_valves: &mut HashSet<String>,
+        remaining_valves: &mut HashSet<String>,
         minutes_left: u64,
-        paths: &HashMap<String, HashSet<(String, u64)>>,
+        paths: &HashMap<String, HashMap<String, u64>>,
     ) -> u64 {
         let mut other_scores = Vec::new();
 
         let can_go = paths.get(currently_at).unwrap();
-        for (dest, dist) in can_go {
-            if open_valves.contains(dest) || minutes_left <= *dist {
+        for other_valve in remaining_valves.clone() {
+            let dist = can_go.get(&other_valve).unwrap();
+            if minutes_left <= *dist {
                 continue;
             }
             let new_minutes_left = minutes_left - dist - 1;
-            let (flow, _) = self.valves.get(dest).unwrap();
-            open_valves.insert(dest.to_owned());
+            let (flow, _) = self.valves.get(&other_valve).unwrap();
+            remaining_valves.remove(&other_valve);
             other_scores.push(
                 flow * new_minutes_left
-                    + self.best_from(dest, open_valves, new_minutes_left, paths),
+                    + self.best_from(&other_valve, remaining_valves, new_minutes_left, paths),
             );
-            open_valves.remove(dest);
+            remaining_valves.insert(other_valve);
         }
 
         other_scores.into_iter().max().unwrap_or(0)
@@ -97,11 +99,38 @@ impl Problem for Day16 {
     }
 
     fn part1(&self) -> Self::Output1 {
-        self.best_from("AA", &mut HashSet::new(), 30, &self.get_paths("AA"))
+        let paths = self.get_paths("AA");
+        self.best_from(
+            "AA",
+            &mut paths.get("AA").unwrap().keys().cloned().collect(),
+            30,
+            &paths,
+        )
     }
 
     fn part2(&self) -> Self::Output2 {
-        0
+        let paths = self.get_paths("AA");
+        let valves = paths
+            .get("AA")
+            .unwrap()
+            .keys()
+            .cloned()
+            .collect::<HashSet<_>>();
+        let a_valve = valves.iter().next().unwrap().clone();
+
+        let mut best_score = 0;
+
+        for human in (0..=valves.len()).flat_map(|i| valves.clone().into_iter().combinations(i)) {
+            let mut human: HashSet<_> = human.into_iter().collect();
+            if !human.contains(&a_valve) {
+                continue;
+            }
+            let mut elephant = &valves - &human;
+            let human_score = self.best_from("AA", &mut human, 26, &paths);
+            let elephant_score = self.best_from("AA", &mut elephant, 26, &paths);
+            best_score = best_score.max(human_score + elephant_score);
+        }
+        best_score
     }
 }
 
@@ -120,4 +149,5 @@ Valve II has flow rate=0; tunnels lead to valves AA, JJ
 Valve JJ has flow rate=21; tunnel leads to valve II",
     );
     assert_eq!(1651, problem.part1());
+    assert_eq!(1707, problem.part2());
 }
