@@ -29,18 +29,18 @@ impl Problem for Day2 {
                 let cube_sets = game_info
                     .split("; ")
                     .map(|s| {
-                        let mut cube_set = CubeSet::default();
-                        for term in s.split(", ") {
-                            let (count, color) = term.split_once(' ').unwrap();
-                            let count = count.parse::<u64>().unwrap();
-                            match color {
-                                "red" => cube_set.red = count,
-                                "green" => cube_set.green = count,
-                                "blue" => cube_set.blue = count,
-                                _ => unreachable!(),
-                            }
-                        }
-                        cube_set
+                        s.split(", ")
+                            .map(|s| s.split_once(' ').unwrap())
+                            .map(|(count, color)| (count.parse::<u64>().unwrap(), color))
+                            .fold(CubeSet::default(), |mut cube_set, (count, color)| {
+                                match color {
+                                    "red" => cube_set.red = count,
+                                    "green" => cube_set.green = count,
+                                    "blue" => cube_set.blue = count,
+                                    _ => unreachable!(),
+                                }
+                                cube_set
+                            })
                     })
                     .collect();
                 Game { cube_sets }
@@ -66,14 +66,16 @@ impl Problem for Day2 {
         self.games
             .iter()
             .map(|game| {
-                let mut best_red = 0;
-                let mut best_green = 0;
-                let mut best_blue = 0;
-                for cube_set in game.cube_sets.iter() {
-                    best_red = best_red.max(cube_set.red);
-                    best_green = best_green.max(cube_set.green);
-                    best_blue = best_blue.max(cube_set.blue);
-                }
+                let (best_red, best_green, best_blue) = game.cube_sets.iter().fold(
+                    (0, 0, 0),
+                    |(best_red, best_green, best_blue), cube_set| {
+                        (
+                            best_red.max(cube_set.red),
+                            best_green.max(cube_set.green),
+                            best_blue.max(cube_set.blue),
+                        )
+                    },
+                );
                 best_red * best_green * best_blue
             })
             .sum()
